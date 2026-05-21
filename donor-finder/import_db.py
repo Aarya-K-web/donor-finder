@@ -4,22 +4,31 @@ import mysql.connector
 
 def run():
     db_host = os.environ.get('DB_HOST', 'localhost')
+    db_port = int(os.environ.get('DB_PORT', '3306'))
     db_user = os.environ.get('DB_USER', 'root')
     db_password = os.environ.get('DB_PASSWORD', '')
     db_name = os.environ.get('DB_NAME', 'blood_organ_donor_db')
+    skip_db_recreate = os.environ.get('SKIP_DB_RECREATE', 'false').lower() == 'true'
 
-    print(f"[1/3] Connecting to MySQL on {db_host}...")
+    print(f"[1/3] Connecting to MySQL on {db_host}:{db_port}...")
     try:
-        conn = mysql.connector.connect(host=db_host, user=db_user, password=db_password)
+        if skip_db_recreate:
+            conn = mysql.connector.connect(host=db_host, port=db_port, user=db_user, password=db_password, database=db_name)
+        else:
+            conn = mysql.connector.connect(host=db_host, port=db_port, user=db_user, password=db_password)
     except Exception as e:
         print(f"[ERROR] Connection failed: {e}")
         sys.exit(1)
         
     cursor = conn.cursor()
-    print(f"[2/3] Clearing and recreating database '{db_name}'...")
-    cursor.execute(f"DROP DATABASE IF EXISTS {db_name}")
-    cursor.execute(f"CREATE DATABASE {db_name}")
-    cursor.execute(f"USE {db_name}")
+    if not skip_db_recreate:
+        print(f"[2/3] Clearing and recreating database '{db_name}'...")
+        cursor.execute(f"DROP DATABASE IF EXISTS {db_name}")
+        cursor.execute(f"CREATE DATABASE {db_name}")
+        cursor.execute(f"USE {db_name}")
+    else:
+        print(f"[2/3] Using existing database '{db_name}' (skipping drop/recreate)...")
+        cursor.execute(f"USE {db_name}")
     cursor.close()
     
     # Helper to execute SQL file with custom delimiter parsing
