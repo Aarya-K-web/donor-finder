@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block title %}Become a Donor | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .donor-register-container {
+        max-width: 550px;
+        margin: 3rem auto;
+    }
+
+    .form-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+    }
+
+    .form-title i {
+        color: var(--secondary);
+        filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.2));
+    }
+
+    .form-subtitle {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        width: 100%;
+        background-color: rgba(11, 15, 25, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-family: var(--font-main);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+    }
+
+    select.form-control option {
+        background-color: var(--bg-dark);
+        color: white;
+    }
+
+    .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.01);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .checkbox-label:hover {
+        color: var(--text-primary);
+    }
+
+    .checkbox-label input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--secondary);
+        cursor: pointer;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .radio-label input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--secondary);
+        cursor: pointer;
+    }
+
+    .btn-submit {
+        background-color: var(--secondary);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-submit:hover {
+        background-color: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="donor-register-container">
+    <div class="card">
+        <h1 class="form-title"><i class="fa-solid fa-heart"></i> Register as Donor</h1>
+        <p class="form-subtitle">Add your medical profiles so compatible recipients in need can find you.</p>
+        
+        <form method="POST" action="{{ url_for('register_donor') }}">
+            <!-- Blood Type -->
+            <div class="form-group">
+                <label for="blood_type">Blood Type</label>
+                <select name="blood_type" id="blood_type" class="form-control" required>
+                    <option value="" disabled selected>Select Blood Type</option>
+                    {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                        <option value="{{ type }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Organs Checkboxes -->
+            <div class="form-group">
+                <label>Organs Willing to Donate</label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="organs" value="Kidney">
+                        <span>Kidneys</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="organs" value="Liver">
+                        <span>Liver</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="organs" value="Cornea">
+                        <span>Eyes (Cornea)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="organs" value="Heart">
+                        <span>Heart</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- City -->
+            <div class="form-group">
+                <label for="city">City Location</label>
+                <input type="text" name="city" id="city" class="form-control" placeholder="e.g. Mumbai" required>
+            </div>
+
+            <!-- Availability Yes/No -->
+            <div class="form-group">
+                <label>Are you currently available to donate?</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="availability" value="Yes" checked>
+                        <span>Yes (Available)</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="availability" value="No">
+                        <span>No (Unavailable)</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Activate Donor Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

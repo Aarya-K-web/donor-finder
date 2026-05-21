@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Donor - LifeLine Link</title>
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --primary-hover: #b71c1c;
+            --primary-light: #ffebee;
+            --text-dark: #212121;
+            --text-muted: #666666;
+            --bg-light: #f9fafb;
+            --border-color: #e0e0e0;
+            --white: #ffffff;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --shadow: 0 4px 10px rgba(0,0,0,0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styling */
+        header {
+            background-color: var(--white);
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .brand-logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu a.cta-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-menu a.cta-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 700px;
+            width: 100%;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Card Form Layout */
+        .form-card {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: var(--font-stack);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--white);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.12);
+        }
+
+        /* Checkboxes SET styling */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.8rem;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* Radio Toggle Buttons */
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Button */
+        .btn-submit {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.2);
+            text-align: center;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        footer p span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-menu {
+                gap: 1rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                ❤️ LifeLine Link
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register_donor.html">Register as Donor</a></li>
+                <li><a href="search.html" class="cta-btn">Search Registry</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Form Container -->
+    <main>
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Donor Profile Registration</h2>
+                <p>Register your health specifications safely into our matching registry to save local lives.</p>
+            </div>
+
+            <form action="search.html" method="GET">
+                <!-- User Basic Details Row -->
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="e.g. Robert Smith" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="e.g. robert@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="e.g. +91 9876543210" required>
+                    </div>
+                </div>
+
+                <!-- Blood Type Dropdown -->
+                <div class="form-group">
+                    <label for="bloodType">Donor Blood Type</label>
+                    <select id="bloodType" class="form-control" required>
+                        <option value="" disabled selected>Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+                <!-- Organs Willing to Donate (SET Checkboxes) -->
+                <div class="form-group">
+                    <label>Organs Willing to Donate (Optional)</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Kidney"> Kidney
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Liver"> Liver
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Lung"> Lung
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Heart"> Heart
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Pancreas"> Pancreas
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Cornea"> Cornea
+                        </label>
+                    </div>
+                </div>
+
+                <!-- City / Location -->
+                <div class="form-group">
+                    <label for="city">City / Location</label>
+                    <input type="text" id="city" class="form-control" placeholder="e.g. Mumbai" required>
+                </div>
+
+                <!-- Availability Status (Yes/No Toggle) -->
+                <div class="form-group">
+                    <label>Currently Available to Donate?</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="availability" value="Available" checked> Yes (Available)
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="availability" value="Unavailable"> No (Unavailable)
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit">Submit Registration to Registry</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <span>LifeLine Link</span>. Designed for DBMS College Project Submission.</p>
+    </footer>
+
+</body>
+</html>

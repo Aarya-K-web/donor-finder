@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 3rem;
+        padding: 3rem 0;
+    }
+
+    .hero-text {
+        flex: 1.2;
+    }
+
+    .hero-text h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -1.5px;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #e50914 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-text p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+        padding: 0.8rem 1.6rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: var(--transition);
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: var(--primary);
+        color: white;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        background-color: #ff1c27;
+    }
+
+    .btn-secondary {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .hero-visual {
+        flex: 0.8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .heart-container {
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.15) 0%, transparent 70%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .heart-icon {
+        font-size: 6rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 15px var(--primary));
+        animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        25% { transform: scale(1.15); }
+        40% { transform: scale(1.05); }
+        60% { transform: scale(1.15); }
+    }
+
+    .grid-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+    }
+
+    .feature-card {
+        padding: 2.5rem 2rem;
+        text-align: center;
+    }
+
+    .feature-card i {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        filter: drop-shadow(0 0 5px var(--primary-glow));
+    }
+
+    .feature-card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .feature-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .hero-container {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .cta-buttons {
+            justify-content: center;
+        }
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-container">
+    <div class="hero-text">
+        <h1>Saving Lives, <br>One Match at a Time</h1>
+        <p>Welcome to LifeLine Link, a cutting-edge college DBMS project showing robust relational database designs linked with a Flask application. Easily register as a donor, post a critical request, and query our dynamic blood compatibility logic instantly.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('register') }}" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Join as Donor
+            </a>
+            <a href="{{ url_for('make_request') }}" class="btn btn-secondary">
+                <i class="fa-solid fa-circle-plus"></i> File Emergency Request
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <i class="fa-solid fa-chart-line"></i> View Admin Panel
+            </a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="heart-container">
+            <i class="fa-solid fa-heartbeat heart-icon"></i>
+        </div>
+    </div>
+</div>
+
+<div class="grid-features">
+    <div class="card feature-card">
+        <i class="fa-solid fa-magnifying-glass-location"></i>
+        <h2>Smart Finder</h2>
+        <p>Uses pre-compiled MySQL stored procedures incorporating standard medical compatibility matrices to match recipients with valid available donors in their city.</p>
+    </div>
+    
+    <div class="card feature-card">
+        <i class="fa-solid fa-bolt-lightning"></i>
+        <h2>Triggered Audits</h2>
+        <p>Logs all transactions instantly via database-level AFTER INSERT triggers, creating an immutable audit trail for tracing matches safely.</p>
+    </div>
+
+    <div class="card feature-card">
+        <i class="fa-solid fa-eye"></i>
+        <h2>Dynamic Views</h2>
+        <p>Restricts data access using dedicated SQL views, serving only available donors and keeping user status synced dynamically in real time.</p>
+    </div>
+</div>
+{% endblock %}

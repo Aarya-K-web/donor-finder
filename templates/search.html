@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+
+{% block title %}Find Compatible Donors | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .search-title i {
+        color: var(--primary);
+        filter: drop-shadow(0 0 4px var(--primary-glow));
+    }
+
+    .subtitle {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .search-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        width: 100%;
+        background-color: rgba(11, 15, 25, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-family: var(--font-main);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+    }
+
+    select.form-control option {
+        background-color: var(--bg-dark);
+        color: white;
+    }
+
+    .btn-search {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 0.9rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-search:hover {
+        background-color: #ff1c27;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+    }
+
+    /* Results layout */
+    .results-header {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .result-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: var(--transition);
+    }
+
+    .result-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.12);
+        transform: translateX(5px);
+    }
+
+    .donor-info h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+    }
+
+    .donor-meta {
+        display: flex;
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .donor-meta span i {
+        color: var(--primary);
+        margin-right: 0.2rem;
+    }
+
+    .organ-badge {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        margin-right: 0.3rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .blood-type-indicator {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(229, 9, 20, 0.08);
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        border-radius: 12px;
+        width: 60px;
+        height: 60px;
+        color: #f87171;
+    }
+
+    .blood-type-indicator .blood-label {
+        font-size: 1.3rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .blood-type-indicator .compat-status {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    /* Explanation Banner */
+    .banner {
+        background: rgba(16, 185, 129, 0.05);
+        border: 1px solid rgba(16, 185, 129, 0.15);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        color: #a7f3d0;
+        font-size: 0.9rem;
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .banner i {
+        font-size: 1.3rem;
+        color: var(--secondary);
+    }
+
+    @media (max-width: 992px) {
+        .search-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1 class="search-title"><i class="fa-solid fa-square-poll-horizontal"></i> Find Compatible Donors</h1>
+    <p class="subtitle">Search available donors using SQL stored procedure <code>FindCompatibleDonors</code> applying standard compatibility logic.</p>
+</div>
+
+<div class="search-grid">
+    <!-- Search Inputs Card -->
+    <div class="card">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem;">Search Criteria</h2>
+        <form method="POST" action="{{ url_for('search_donors') }}">
+            <div class="form-group">
+                <label for="blood_type">Recipient's Blood Type</label>
+                <select name="blood_type" id="blood_type" class="form-control" required>
+                    <option value="" disabled {% if not blood_type %}selected{% endif %}>Select Blood Type</option>
+                    {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                        <option value="{{ type }}" {% if blood_type == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="city">City (Optional)</label>
+                <input type="text" name="city" id="city" class="form-control" placeholder="e.g. Mumbai" value="{{ city }}">
+            </div>
+            
+            <button type="submit" class="btn-search">
+                <i class="fa-solid fa-magnifying-glass"></i> Search Matches
+            </button>
+        </form>
+    </div>
+
+    <!-- Search Results Card -->
+    <div class="card">
+        {% if searched %}
+            <div class="results-header">
+                <div>
+                    Search Results 
+                    <span style="font-size: 0.9rem; color: var(--text-secondary); font-weight: normal; margin-left: 0.5rem;">
+                        for Recipient (<strong>{{ blood_type }}</strong>) {% if city %}in <strong>{{ city }}</strong>{% endif %}
+                    </span>
+                </div>
+                <span class="badge badge-blood">{{ results|length }} Donor(s) Found</span>
+            </div>
+
+            {% if results %}
+                <div class="banner">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>
+                        <strong>Stored Procedure Matched Compatibility:</strong> Displaying donors matching blood type compatibility for <strong>{{ blood_type }}</strong>. Exact matches are prioritized at the top.
+                    </div>
+                </div>
+
+                {% for donor in results %}
+                    <div class="result-card">
+                        <div class="donor-info">
+                            <h3>{{ donor.donor_name }}</h3>
+                            <div class="donor-meta">
+                                <span><i class="fa-solid fa-location-dot"></i> {{ donor.city }}</span>
+                                <span><i class="fa-solid fa-phone"></i> {{ donor.donor_phone }}</span>
+                                <span><i class="fa-solid fa-envelope"></i> {{ donor.donor_email }}</span>
+                            </div>
+                            <div>
+                                {% if donor.organs_willing_to_donate %}
+                                    {% for organ in donor.organs_willing_to_donate.split(',') %}
+                                        <span class="organ-badge">{{ organ }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span style="color: var(--text-secondary); font-style: italic; font-size: 0.8rem;">Blood Donation Profile</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="blood-type-indicator">
+                            <span class="blood-label">{{ donor.donor_blood_type }}</span>
+                            <span class="compat-status">Donor</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary);">
+                    <i class="fa-solid fa-users-slash" style="font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.2;"></i>
+                    <h3>No Compatible Donors Found</h3>
+                    <p>No active donors in our database view are currently compatible with the blood type <strong>{{ blood_type }}</strong> in the requested region.</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <div style="text-align: center; padding: 5rem 2rem; color: var(--text-secondary);">
+                <i class="fa-solid fa-bezier-curve" style="font-size: 3rem; margin-bottom: 1.5rem; color: rgba(255,255,255,0.06);"></i>
+                <h3>Interactive Matching Engine</h3>
+                <p>Select a recipient's blood type and optionally filter by city to run the database matching procedure. The procedure calculates compatibility matrixes dynamically.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

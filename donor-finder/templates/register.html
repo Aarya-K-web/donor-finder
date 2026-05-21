@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Profile | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .register-container {
+        max-width: 600px;
+        margin: 2rem auto;
+    }
+
+    .form-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+    }
+
+    .form-title i {
+        color: var(--primary);
+    }
+
+    .form-subtitle {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        width: 100%;
+        background-color: rgba(11, 15, 25, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-family: var(--font-main);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+    }
+
+    select.form-control option {
+        background-color: var(--bg-dark);
+        color: white;
+    }
+
+    /* Donor Profile Special Box */
+    .donor-section {
+        background-color: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        display: none; /* Controlled dynamically by JavaScript */
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .organ-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+    .checkbox-container input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+
+    .btn-submit {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-submit:hover {
+        background-color: #ff1c27;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="card">
+        <h1 class="form-title"><i class="fa-solid fa-id-card"></i> Create Account</h1>
+        <p class="form-subtitle">Register to join the donor registry or to request critical transplant items.</p>
+        
+        <form method="POST" action="{{ url_for('register') }}">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Aarya Patel" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="e.g. aarya@example.com" required>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" class="form-control" placeholder="e.g. 9876543210" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Create secure password" required>
+            </div>
+
+            <!-- User Type -->
+            <div class="form-group">
+                <label for="user_type">Account Type (Role)</label>
+                <select name="user_type" id="user_type" class="form-control" required onchange="toggleDonorSection()">
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="Donor">Donor (Willing to Donate Blood/Organs)</option>
+                    <option value="Recipient">Recipient (Looking for Blood/Organs)</option>
+                </select>
+            </div>
+
+            <!-- Secondary Donor Info Section (Hidden unless Donor is chosen) -->
+            <div id="donorSection" class="donor-section">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem;">
+                    <i class="fa-solid fa-hand-holding-heart" style="color: var(--secondary); margin-right: 0.3rem;"></i> 
+                    Donor Profile Specifications
+                </h3>
+                
+                <div class="form-group">
+                    <label for="blood_type">Donor Blood Type</label>
+                    <select name="blood_type" id="blood_type" class="form-control">
+                        <option value="" disabled selected>Select Blood Type</option>
+                        {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ type }}">{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City Location</label>
+                    <input type="text" name="city" id="city" class="form-control" placeholder="e.g. Mumbai">
+                </div>
+
+                <div class="form-group">
+                    <label>Organs Willing to Donate (Optional)</label>
+                    <div class="organ-grid">
+                        {% for organ in ['Kidney', 'Liver', 'Lung', 'Heart', 'Pancreas', 'Cornea'] %}
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="organs" value="{{ organ }}">
+                                <span>{{ organ }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Register Account</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript to handle dynamic form fields -->
+<script>
+    function toggleDonorSection() {
+        var userTypeSelect = document.getElementById("user_type");
+        var donorSection = document.getElementById("donorSection");
+        var bloodTypeSelect = document.getElementById("blood_type");
+        var cityInput = document.getElementById("city");
+
+        if (userTypeSelect.value === "Donor") {
+            donorSection.style.display = "block";
+            bloodTypeSelect.setAttribute("required", "required");
+            cityInput.setAttribute("required", "required");
+        } else {
+            donorSection.style.display = "none";
+            bloodTypeSelect.removeAttribute("required");
+            cityInput.removeAttribute("required");
+        }
+    }
+</script>
+{% endblock %}

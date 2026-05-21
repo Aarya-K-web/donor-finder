@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% block title %}Match Confirmed | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 650px;
+        margin: 3rem auto;
+        text-align: center;
+    }
+
+    .success-icon-holder {
+        width: 80px;
+        height: 80px;
+        background-color: rgba(16, 185, 129, 0.12);
+        border: 2px solid rgba(16, 185, 129, 0.25);
+        color: var(--secondary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 1.5rem auto;
+        filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.25));
+        animation: scaleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes scaleUp {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    .success-desc {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        margin-bottom: 2.5rem;
+    }
+
+    /* Donor Contact Card */
+    .contact-card {
+        background: rgba(22, 28, 45, 0.5);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: left;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 3px solid var(--secondary);
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .donor-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.25rem;
+    }
+
+    .donor-sub {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.8rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        gap: 0.4rem;
+    }
+
+    .badge-blood {
+        background-color: rgba(229, 9, 20, 0.12);
+        color: #f87171;
+        border: 1px solid rgba(229, 9, 20, 0.25);
+    }
+
+    .organ-tag {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        margin-right: 0.3rem;
+        margin-bottom: 0.3rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Contact Details Grid */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .detail-value {
+        font-size: 1.05rem;
+        color: white;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .detail-value i {
+        color: var(--secondary);
+    }
+
+    .audit-note {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+    }
+
+    .audit-note i {
+        color: var(--secondary);
+        font-size: 1.1rem;
+    }
+
+    /* CTA Button */
+    .btn-return {
+        background-color: var(--secondary);
+        color: white;
+        border: none;
+        padding: 0.9rem 2rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        text-decoration: none;
+    }
+
+    .btn-return:hover {
+        background-color: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    @media (max-width: 576px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-icon-holder">
+        <i class="fa-solid fa-circle-check"></i>
+    </div>
+    
+    <h1 class="success-title">Emergency Match Locked</h1>
+    <p class="success-desc">The request has been successfully assigned to a compatible donor. An audit record is stored and logged.</p>
+    
+    <!-- Donor Contact Card -->
+    <div class="contact-card">
+        <div class="card-header">
+            <div>
+                <div class="donor-name">{{ donor.donor_name }}</div>
+                <div class="donor-sub">Donor Profile ID: #{{ donor.donor_id }}</div>
+            </div>
+            
+            <span class="badge badge-blood">
+                <i class="fa-solid fa-droplet"></i> {{ donor.blood_type }}
+            </span>
+        </div>
+        
+        <div class="details-grid">
+            <div class="detail-item">
+                <div class="detail-label">Telephone Contact</div>
+                <div class="detail-value">
+                    <i class="fa-solid fa-phone"></i> {{ donor.donor_phone }}
+                </div>
+            </div>
+            
+            <div class="detail-item">
+                <div class="detail-label">Email Address</div>
+                <div class="detail-value">
+                    <i class="fa-solid fa-envelope"></i> {{ donor.donor_email }}
+                </div>
+            </div>
+            
+            <div class="detail-item">
+                <div class="detail-label">Location / City</div>
+                <div class="detail-value">
+                    <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> {{ donor.city }}
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Emergency Category</div>
+                <div class="detail-value" style="color: var(--warning);">
+                    {% if req_type == 'Blood' %}
+                        <i class="fa-solid fa-droplet" style="color: var(--primary);"></i> Blood Transfusion
+                    {% else %}
+                        <i class="fa-solid fa-lungs"></i> Organ Transplant
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        {% if donor.organs_willing_to_donate %}
+            <div style="margin-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.25rem;">
+                <div class="detail-label" style="margin-bottom: 0.5rem;">Registered Organs Willing to Donate</div>
+                <div>
+                    {% for organ in donor.organs_willing_to_donate.split(',') %}
+                        <span class="organ-tag" style="margin-bottom: 0;">{{ organ }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="audit-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+                <strong>SQL Trigger Audit Success:</strong> Inserted match into <code>matches</code> table. The trigger <code>after_match_insert</code> logged the transaction automatically into <code>audit_log</code> table.
+            </div>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('dashboard') }}" class="btn-return">
+        <i class="fa-solid fa-gauge"></i> Return to Dashboard
+    </a>
+</div>
+{% endblock %}

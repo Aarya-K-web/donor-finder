@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .welcome-section {
+        margin-bottom: 3rem;
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-section h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-section p {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .stat-icon.donors {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: var(--secondary);
+    }
+
+    .stat-icon.blood {
+        background-color: rgba(229, 9, 20, 0.1);
+        color: var(--primary);
+    }
+
+    .stat-icon.organs {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--warning);
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .info-section {
+        margin-top: 3rem;
+    }
+
+    .info-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .feature-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: var(--transition);
+    }
+
+    .feature-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .feature-item h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .feature-item h3 i {
+        color: var(--primary);
+    }
+
+    .feature-item p {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="welcome-section">
+    <h1>Blood & Organ Donor Finder</h1>
+    <p>A comprehensive DBMS project linking active blood and organ donors with critical, real-time emergency requests inside a unified medical ecosystem.</p>
+</div>
+
+<div class="stats-grid">
+    <a href="{{ url_for('view_donors') }}" class="card stat-card">
+        <div class="stat-icon donors">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+            <div class="stat-number">{{ stats.available_donors }}</div>
+            <div class="stat-label">Available Donors (SQL View)</div>
+        </div>
+    </a>
+    
+    <div class="card stat-card">
+        <div class="stat-icon blood">
+            <i class="fa-solid fa-droplet"></i>
+        </div>
+        <div>
+            <div class="stat-number">{{ stats.pending_blood }}</div>
+            <div class="stat-label">Pending Blood Requests</div>
+        </div>
+    </div>
+
+    <div class="card stat-card">
+        <div class="stat-icon organs">
+            <i class="fa-solid fa-lungs"></i>
+        </div>
+        <div>
+            <div class="stat-number">{{ stats.pending_organ }}</div>
+            <div class="stat-label">Pending Organ Requests</div>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section">
+    <h2 class="info-title">Key Database Features Implemented</h2>
+    <div class="features-grid">
+        <div class="feature-item">
+            <h3><i class="fa-solid fa-database"></i> DDL Constraints</h3>
+            <p>Uses strict PRIMARY KEY, UNIQUE, and FOREIGN KEY constraints to enforce relational integrity across users, donors, requests, and matches.</p>
+        </div>
+        <div class="feature-item">
+            <h3><i class="fa-solid fa-shield-halved"></i> Assertions & Checks</h3>
+            <p>Implements check constraints to ensure logical integrity, such as preventing a single match from linking to both blood and organ requests.</p>
+        </div>
+        <div class="feature-item">
+            <h3><i class="fa-solid fa-bolt"></i> Database Triggers</h3>
+            <p>An AFTER INSERT trigger automatic audit-logs every successfully created match into an immutable <code>audit_log</code> table.</p>
+        </div>
+        <div class="feature-item">
+            <h3><i class="fa-solid fa-compass-drafting"></i> Stored Procedures</h3>
+            <p>Calculates medical blood type compatibility rules inside a pre-compiled stored procedure, matching patients with donors locally.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

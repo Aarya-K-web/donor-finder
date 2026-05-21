@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | LifeLine Link{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        max-width: 450px;
+        margin: 4rem auto;
+    }
+
+    .form-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+    }
+
+    .form-title i {
+        color: var(--primary);
+    }
+
+    .form-subtitle {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        width: 100%;
+        background-color: rgba(11, 15, 25, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        color: white;
+        font-family: var(--font-main);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+    }
+
+    .btn-submit {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1rem;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-submit:hover {
+        background-color: #ff1c27;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .register-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .register-link a:hover {
+        color: #ff3333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="card">
+        <h1 class="form-title"><i class="fa-solid fa-right-to-bracket"></i> Welcome Back</h1>
+        <p class="form-subtitle">Login to manage your profile or submit emergencies.</p>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Login Account</button>
+        </form>
+
+        <div class="register-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Create one here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
