@@ -19,7 +19,7 @@ if exist .env (
     set DB_HOST=donor-finder-db-aaryak418-a818.i.aivencloud.com
     set DB_PORT=10208
     set DB_USER=avnadmin
-    set DB_NAME=defaultdb
+    set DB_NAME=blood_organ_donor_db
 )
 
 echo.
