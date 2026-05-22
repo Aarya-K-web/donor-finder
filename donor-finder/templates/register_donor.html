@@ -4,11 +4,6 @@
 
 {% block extra_css %}
 <style>
-    /* Page Background Overrides */
-    body {
-        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
-    }
-
     .donor-register-wrapper {
         display: flex;
         justify-content: center;
@@ -33,9 +28,19 @@
 
     .form-header i {
         color: var(--primary); /* Deep red */
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 0.8rem;
         display: inline-block;
+        animation: heartbeat 2s infinite ease-in-out;
+        filter: drop-shadow(0 2px 8px rgba(214, 40, 40, 0.2));
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        14% { transform: scale(1.12); }
+        28% { transform: scale(1); }
+        42% { transform: scale(1.12); }
+        70% { transform: scale(1); }
     }
 
     .form-title {

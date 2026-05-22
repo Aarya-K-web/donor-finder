@@ -4,11 +4,6 @@
 
 {% block extra_css %}
 <style>
-    /* Page Background Overrides */
-    body {
-        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
-    }
-
     .login-wrapper {
         display: flex;
         justify-content: center;
@@ -22,8 +17,8 @@
         padding: 3rem;
         background-color: white;
         border-radius: 16px;
-        box-shadow: var(--shadow-subtle);
-        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 20px rgba(2, 62, 138, 0.07);
+        border: 1px solid #E8EDF5;
     }
 
     .form-header {
@@ -33,9 +28,19 @@
 
     .form-header i {
         color: var(--primary);
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 1rem;
         display: inline-block;
+        animation: heartbeat 2s infinite ease-in-out;
+        filter: drop-shadow(0 2px 8px rgba(214, 40, 40, 0.2));
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        14% { transform: scale(1.12); }
+        28% { transform: scale(1); }
+        42% { transform: scale(1.12); }
+        70% { transform: scale(1); }
     }
 
     .form-title {
@@ -60,16 +65,16 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-heading);
+        color: var(--text-dark);
     }
 
     .form-control {
         width: 100%;
         background-color: white;
-        border: 1.5px solid var(--border-subtle);
+        border: 1.5px solid #E8EDF5;
         border-radius: 8px;
         padding: 0.8rem 1rem;
-        color: var(--text-heading);
+        color: var(--text-dark);
         font-family: var(--font-body);
         font-size: 1rem;
         transition: var(--transition);
@@ -77,8 +82,8 @@
 
     .form-control:focus {
         outline: none;
-        border-color: var(--secondary);
-        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
+        border-color: var(--secondary); /* Trust Blue #023E8A */
+        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.15);
     }
 
     .btn-submit {

@@ -11,32 +11,61 @@
         justify-content: space-between;
         gap: 4rem;
         padding: 5rem 0;
-        background-color: var(--bg-light);
     }
 
     .hero-text {
         flex: 1.2;
     }
 
+    /* Overline Monospace Badge */
+    .overline-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        padding: 0.4rem 1.2rem;
+        border-radius: 50px;
+        font-family: monospace;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+    }
+
+    .pulsing-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--primary);
+        border-radius: 50%;
+        animation: dot-pulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes dot-pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
     .hero-text h1 {
-        font-size: 3.5rem; /* 56px */
+        font-size: 3.375rem; /* 54px */
         font-weight: 800;
         line-height: 1.2;
         letter-spacing: -1px;
         margin-bottom: 1.5rem;
-        color: var(--secondary); /* Deep blue */
+        color: var(--secondary); /* Trust Blue */
     }
 
-    .hero-text h1 span {
-        color: var(--primary); /* Deep red highlighting "Save a Life." */
+    .hero-text h1 span.highlight {
+        color: var(--primary); /* Deep red highlighting "Right Now." */
     }
 
     .hero-text p {
-        font-size: 1.25rem; /* 20px subheadline */
+        font-size: 1.125rem; /* 18px subheadline */
         color: var(--text-body);
         line-height: 1.6;
         margin-bottom: 2.5rem;
-        max-width: 500px;
+        max-width: 480px;
     }
 
     .cta-buttons {
@@ -85,64 +114,66 @@
         transform: translateY(-2px);
     }
 
+    /* Hero Visual Right Column */
     .hero-visual {
         flex: 0.8;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
     }
 
-    /* Heart & Pulse Graphic */
-    .heart-svg-wrapper {
-        width: 320px;
-        height: 320px;
+    /* 3D Blood Drop Floating and Rotation Styling */
+    .blood-drop-wrapper {
         position: relative;
+        width: 300px;
+        height: 360px;
         display: flex;
         justify-content: center;
         align-items: center;
+        animation: float-y 6s ease-in-out infinite;
     }
 
-    .heart-pulse-svg {
+    .blood-drop-3d {
         width: 100%;
         height: 100%;
+        transform-origin: center center;
+        animation: rotate-z 8s ease-in-out infinite;
     }
 
-    .svg-heart {
-        fill: var(--primary);
-        transform-origin: center;
-        animation: svg-heartbeat 1.6s infinite ease-in-out;
+    @keyframes float-y {
+        0%, 100% { transform: translateY(-12px); }
+        50% { transform: translateY(12px); }
     }
 
-    .svg-pulse-path {
-        stroke: var(--secondary);
-        stroke-width: 3;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        fill: none;
-        stroke-dasharray: 1000;
-        stroke-dashoffset: 1000;
-        animation: draw-pulse 3s infinite linear;
+    @keyframes rotate-z {
+        0%, 100% { transform: rotate(-3deg); }
+        50% { transform: rotate(3deg); }
     }
 
-    @keyframes svg-heartbeat {
-        0%, 100% { transform: scale(1) translate(0, 0); }
-        20% { transform: scale(1.1) translate(0, -3px); }
-        40% { transform: scale(1.02) translate(0, 0); }
-        60% { transform: scale(1.08) translate(0, -2px); }
+    /* Under-drop Page Glow */
+    .drop-shadow-glow {
+        position: absolute;
+        width: 260px;
+        height: 50px;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse, rgba(214, 40, 40, 0.12) 0%, transparent 60%);
+        z-index: -1;
+        animation: glow-pulse 6s ease-in-out infinite;
     }
 
-    @keyframes draw-pulse {
-        to {
-            stroke-dashoffset: 0;
-        }
+    @keyframes glow-pulse {
+        0%, 100% { transform: translateX(-50%) scale(0.9); opacity: 0.6; }
+        50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
     }
 
     /* Stats Bar Section */
     .stats-bar {
-        background-color: var(--bg-section); /* Light gray band #F8F9FA */
-        border-top: 1px solid var(--border-subtle);
-        border-bottom: 1px solid var(--border-subtle);
-        padding: 2rem 1.5rem;
+        background-color: #F0F4FF; /* Blue-tinted stats band background */
+        border: 1px solid rgba(2, 62, 138, 0.08);
+        padding: 2.2rem 1.5rem;
         margin: 2rem 0 4rem 0;
         border-radius: 16px;
     }
@@ -157,7 +188,7 @@
     }
 
     .stat-item {
-        border-right: 1px solid var(--border-subtle);
+        border-right: 1px solid rgba(2, 62, 138, 0.1);
         padding: 0.5rem 1rem;
     }
 
@@ -176,19 +207,16 @@
     .stat-label {
         font-family: var(--font-body);
         font-size: 0.95rem;
-        color: var(--text-heading);
+        color: var(--text-body);
         font-weight: 600;
     }
 
     /* How It Works Section */
     .how-it-works-section {
-        background-color: var(--bg-section); /* Light gray #F8F9FA */
         padding: 5rem 2rem;
         margin: 0 -10vw;
         padding-left: 10vw;
         padding-right: 10vw;
-        border-top: 1px solid var(--border-subtle);
-        border-bottom: 1px solid var(--border-subtle);
     }
 
     .section-header {
@@ -198,7 +226,7 @@
 
     .section-header h2 {
         font-size: 2.25rem;
-        color: var(--secondary); /* Deep blue */
+        color: var(--secondary); /* Trust Blue */
         margin-bottom: 1rem;
     }
 
@@ -222,16 +250,32 @@
         border-radius: 16px;
         padding: 3rem 2rem;
         text-align: center;
-        box-shadow: var(--shadow-subtle);
+        box-shadow: 0 4px 20px rgba(2, 62, 138, 0.07); /* blue-tinted shadow */
         transition: var(--transition);
-        border: 1px solid var(--border-subtle);
+        border: 1px solid var(--border-subtle); /* subtle #E8EDF5 border */
         position: relative;
         overflow: hidden;
+        z-index: 1;
     }
 
     .work-card:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-hover);
+    }
+
+    /* step number behind card - decorative */
+    .step-bg-number {
+        position: absolute;
+        font-family: var(--font-headings);
+        font-size: 8rem;
+        font-weight: 900;
+        color: var(--bg-section); /* Semi-transparent large light blue */
+        top: -20px;
+        right: -10px;
+        opacity: 0.6;
+        z-index: -1;
+        pointer-events: none;
+        user-select: none;
     }
 
     .work-card::before {
@@ -266,7 +310,7 @@
     .work-card h3 {
         font-size: 1.35rem;
         margin-bottom: 1rem;
-        color: var(--text-heading);
+        color: var(--text-dark);
     }
 
     .work-card p {
@@ -334,6 +378,9 @@
         .stat-item {
             border-right: none;
         }
+        .hero-visual {
+            display: none; /* Hide 3D blood drop on small mobile screens */
+        }
     }
 </style>
 {% endblock %}
@@ -341,7 +388,11 @@
 {% block content %}
 <div class="hero-container fade-in-on-scroll">
     <div class="hero-text">
-        <h1>Find a Donor.<br><span>Save a Life.</span> Right Now.</h1>
+        <div class="overline-badge">
+            <span class="pulsing-dot"></span>
+            <span>Saving Lives Daily</span>
+        </div>
+        <h1>Find a Donor.<br>Save a Life. <span class="highlight">Right Now.</span></h1>
         <p>Saving Lives by connecting patients in critical emergencies with local blood and organ donors instantly using structured compatibility medical routing.</p>
         <div class="cta-buttons">
             <a href="{{ url_for('search_donors') }}" class="btn btn-primary">
@@ -359,17 +410,36 @@
         </div>
     </div>
     <div class="hero-visual">
-        <div class="heart-svg-wrapper">
-            <svg class="heart-pulse-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <!-- Outer Pulse Ring Background Glow -->
-                <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(214, 40, 40, 0.05)" stroke-width="4"/>
+        <div class="blood-drop-wrapper">
+            <svg class="blood-drop-3d" viewBox="0 0 300 360" width="300" height="360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="inner-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="6" result="blur" />
+                        <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"/>
+                        <feFlood flood-color="#E8294A" flood-opacity="0.5"/>
+                        <feComposite in2="shadowDiff" operator="in"/>
+                        <feComposite in2="SourceGraphic" operator="over"/>
+                    </filter>
+                    <radialGradient id="drop-grad" cx="35%" cy="30%" r="65%" fx="30%" fy="25%">
+                        <stop offset="0%" stop-color="#E8294A" /> <!-- Left side highlight -->
+                        <stop offset="50%" stop-color="#C0152A" /> <!-- Deep crimson base -->
+                        <stop offset="100%" stop-color="#8B0000" /> <!-- Bottom-right shadow -->
+                    </radialGradient>
+                </defs>
                 
-                <!-- Heart Shape SVG -->
-                <path class="svg-heart" d="M200,280 C200,280 310,210 310,145 C310,95 270,60 225,60 C200,60 188,72 180,82 C172,72 160,60 135,60 C90,60 50,95 50,145 C50,210 160,280 200,280 Z" />
+                <!-- Base Drop SVG Shape -->
+                <path d="M150,30 C150,30 260,160 260,250 A110,110 0 0,1 40,250 C40,160 150,30 150,30 Z" 
+                      fill="url(#drop-grad)" 
+                      filter="url(#inner-glow)"
+                      style="filter: drop-shadow(0 30px 60px rgba(192, 21, 42, 0.35));" />
+                      
+                <!-- Top-Right Specular Highlight Ellipse -->
+                <ellipse cx="205" cy="205" rx="14" ry="24" fill="#FFB3BE" opacity="0.8" transform="rotate(-35 205 205)" />
                 
-                <!-- Pulsing ECG Wave Line Overlay -->
-                <path class="svg-pulse-path" d="M70,200 L120,200 L135,170 L150,230 L165,140 L180,250 L195,190 L210,210 L225,200 L330,200" />
+                <!-- Glassy Liquid Highlight near Top -->
+                <path d="M150,65 C152,65 159,75 159,81 A9,9 0 0,1 141,81 C141,75 148,65 150,65 Z" fill="#FFFFFF" opacity="0.85" transform="rotate(-15 150 75)" />
             </svg>
+            <div class="drop-shadow-glow"></div>
         </div>
     </div>
 </div>
@@ -405,6 +475,7 @@
     
     <div class="works-grid">
         <div class="work-card">
+            <div class="step-bg-number">01</div>
             <div class="work-icon-wrapper">
                 <i class="fa-solid fa-file-invoice"></i>
             </div>
@@ -413,6 +484,7 @@
         </div>
         
         <div class="work-card">
+            <div class="step-bg-number">02</div>
             <div class="work-icon-wrapper">
                 <i class="fa-solid fa-bezier-curve"></i>
             </div>
@@ -421,6 +493,7 @@
         </div>
         
         <div class="work-card">
+            <div class="step-bg-number">03</div>
             <div class="work-icon-wrapper">
                 <i class="fa-solid fa-phone-volume"></i>
             </div>

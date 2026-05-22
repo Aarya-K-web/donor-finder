@@ -4,11 +4,6 @@
 
 {% block extra_css %}
 <style>
-    /* Page Background Overrides */
-    body {
-        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
-    }
-
     .dashboard-wrapper {
         padding: 3rem 0;
         max-width: 1200px;
@@ -30,6 +25,17 @@
 
     .dash-header h1 i {
         color: var(--primary); /* Heart icon accent */
+        animation: heartbeat 2s infinite ease-in-out;
+        display: inline-block;
+        filter: drop-shadow(0 2px 6px rgba(214, 40, 40, 0.25));
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        14% { transform: scale(1.1); }
+        28% { transform: scale(1); }
+        42% { transform: scale(1.1); }
+        70% { transform: scale(1); }
     }
 
     .dash-header p {
