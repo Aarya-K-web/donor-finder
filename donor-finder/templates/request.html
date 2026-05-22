@@ -4,35 +4,55 @@
 
 {% block extra_css %}
 <style>
-    .request-container {
-        max-width: 600px;
-        margin: 2rem auto;
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
+    .request-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .request-card {
+        max-width: 650px;
+        width: 100%;
+        padding: 3rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-header i {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
     }
 
     .form-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary); /* Deep Blue */
         margin-bottom: 0.5rem;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-    }
-
-    .form-title i {
-        color: var(--primary);
     }
 
     .form-subtitle {
-        color: var(--text-secondary);
-        text-align: center;
-        margin-bottom: 2rem;
+        color: var(--text-body);
         font-size: 0.95rem;
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
+        text-align: left;
     }
 
     .form-group label {
@@ -40,48 +60,239 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-primary);
+        color: var(--text-heading);
     }
 
     .form-control {
         width: 100%;
-        background-color: rgba(11, 15, 25, 0.6);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
         padding: 0.8rem 1rem;
-        color: white;
-        font-family: var(--font-main);
+        color: var(--text-heading);
+        font-family: var(--font-body);
         font-size: 1rem;
         transition: var(--transition);
     }
 
     .form-control:focus {
         outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
     }
 
-    select.form-control option {
-        background-color: var(--bg-dark);
-        color: white;
+    /* Visually hidden select for validator compatibility */
+    .visually-hidden-select {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* Request Category Toggle Cards */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .category-card {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        transition: var(--transition);
+        font-weight: 600;
+        color: var(--text-body);
+        text-align: center;
+    }
+
+    .category-card i {
+        font-size: 2rem;
+        color: var(--text-body);
+        transition: var(--transition);
+    }
+
+    .category-card:hover {
+        border-color: var(--secondary);
+    }
+
+    .category-card.type-blood.active {
+        background-color: rgba(214, 40, 40, 0.05);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    .category-card.type-blood.active i {
+        color: var(--primary);
+    }
+
+    .category-card.type-organ.active {
+        background-color: rgba(2, 62, 138, 0.05);
+        border-color: var(--secondary);
+        color: var(--secondary);
+    }
+
+    .category-card.type-organ.active i {
+        color: var(--secondary);
     }
 
     /* Subsections */
     .req-type-box {
-        background-color: rgba(255, 255, 255, 0.02);
-        border: 1px dashed rgba(255, 255, 255, 0.1);
+        background-color: var(--bg-section);
+        border: 1.5px solid var(--border-subtle);
         border-radius: 16px;
         padding: 1.5rem;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         animation: fadeIn 0.4s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
     }
 
-    #bloodInputs { display: none; }
-    #organInputs { display: none; }
+    #bloodInputs {
+        display: none;
+        border-left: 4px solid var(--primary);
+    }
+
+    #organInputs {
+        display: none;
+        border-left: 4px solid var(--secondary);
+    }
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Blood Type Button Grid */
+    .blood-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .blood-btn {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: 0.8rem;
+        font-family: var(--font-headings);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-heading);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+    }
+
+    .blood-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background-color: rgba(214, 40, 40, 0.02);
+    }
+
+    .blood-btn.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 4px 10px rgba(214, 40, 40, 0.2);
+    }
+
+    /* Organ Chips Grid */
+    .organ-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .organ-btn {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 50px;
+        padding: 0.7rem;
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-body);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+    }
+
+    .organ-btn:hover {
+        border-color: var(--secondary);
+        color: var(--secondary);
+        background-color: rgba(2, 62, 138, 0.02);
+    }
+
+    .organ-btn.active {
+        background-color: var(--secondary);
+        color: white;
+        border-color: var(--secondary);
+        box-shadow: 0 4px 10px rgba(2, 62, 138, 0.2);
+    }
+
+    /* Urgency Cards Grid */
+    .urgency-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .urgency-btn {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 1rem;
+        font-family: var(--font-headings);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-body);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    .urgency-btn i {
+        font-size: 1.2rem;
+    }
+
+    .urgency-btn:hover {
+        border-color: var(--secondary);
+    }
+
+    .urgency-btn.urgency-normal.active {
+        background-color: rgba(45, 106, 79, 0.08);
+        border-color: var(--success-green);
+        color: var(--success-green);
+    }
+
+    .urgency-btn.urgency-urgent.active {
+        background-color: rgba(253, 126, 20, 0.08);
+        border-color: #fd7e14;
+        color: #fd7e14;
+    }
+
+    .urgency-btn.urgency-critical.active {
+        background-color: rgba(214, 40, 40, 0.08);
+        border-color: var(--primary);
+        color: var(--primary);
+        box-shadow: 0 4px 10px rgba(214, 40, 40, 0.15);
     }
 
     .btn-submit {
@@ -90,28 +301,66 @@
         border: none;
         width: 100%;
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: 50px; /* rounded-pill style */
         font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
         margin-top: 1.5rem;
-        box-shadow: 0 4px 15px var(--primary-glow);
+        box-shadow: 0 4px 15px rgba(214, 40, 40, 0.25);
+        font-family: var(--font-headings);
     }
 
     .btn-submit:hover {
-        background-color: #ff1c27;
+        background-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        box-shadow: 0 6px 20px rgba(214, 40, 40, 0.35);
+    }
+
+    .fallback-link {
+        font-size: 0.8rem;
+        color: var(--text-body);
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    .fallback-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .fallback-link a:hover {
+        text-decoration: underline;
+        color: var(--primary-hover);
+    }
+
+    @media (max-width: 576px) {
+        .category-grid, .urgency-grid {
+            grid-template-columns: 1fr;
+        }
+        .blood-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .organ-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .request-card {
+            padding: 2rem 1.5rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="request-container">
-    <div class="card">
-        <h1 class="form-title"><i class="fa-solid fa-square-plus"></i> Submit Emergency Request</h1>
-        <p class="form-subtitle">Create a critical request in the donor-matching database queue.</p>
+<div class="request-wrapper">
+    <div class="request-card">
+        <div class="form-header">
+            <i class="fa-solid fa-circle-plus"></i>
+            <h1 class="form-title">Submit Emergency Request</h1>
+            <p class="form-subtitle">Add a critical request into the donor-matching database queue</p>
+        </div>
         
         <form method="POST" action="{{ url_for('make_request') }}">
             
@@ -124,38 +373,56 @@
                         <option value="{{ rec.user_id }}">{{ rec.name }} (User ID: {{ rec.user_id }})</option>
                     {% endfor %}
                 </select>
-                <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.3rem;">
-                    If there are no recipients listed, please <a href="{{ url_for('register') }}" style="color: var(--primary); text-decoration: none; font-weight: 500;">register a Recipient account</a> first.
+                <span class="fallback-link">
+                    If there are no recipients listed, please <a href="{{ url_for('register') }}">register a Recipient account</a> first.
                 </span>
             </div>
 
-            <!-- Request Type -->
+            <!-- Request Type Selector -->
             <div class="form-group">
-                <label for="request_type">Request Category</label>
-                <select name="request_type" id="request_type" class="form-control" required onchange="toggleRequestTypeInputs()">
+                <label>Request Category</label>
+                <select name="request_type" id="request_type" class="visually-hidden-select" required onchange="toggleRequestTypeInputs()">
                     <option value="" disabled selected>Select Category</option>
                     <option value="Blood">Blood Transfusion</option>
                     <option value="Organ">Organ Transplant</option>
                 </select>
+                
+                <!-- Visual Cards -->
+                <div class="category-grid">
+                    <div class="category-card type-blood" id="cat-blood" onclick="selectCategory('Blood')">
+                        <i class="fa-solid fa-droplet"></i>
+                        <span>Blood Transfusion</span>
+                    </div>
+                    <div class="category-card type-organ" id="cat-organ" onclick="selectCategory('Organ')">
+                        <i class="fa-solid fa-lungs"></i>
+                        <span>Organ Transplant</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Blood Request Custom Fields -->
             <div id="bloodInputs" class="req-type-box">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; color: var(--primary);">
-                    <i class="fa-solid fa-droplet" style="margin-right: 0.3rem;"></i> Blood Specifications
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--border-subtle); padding-bottom: 0.5rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-droplet"></i> Blood Specifications
                 </h3>
                 
                 <div class="form-group">
-                    <label for="blood_type">Required Blood Type</label>
-                    <select name="blood_type" id="blood_type" class="form-control">
+                    <label>Required Blood Type</label>
+                    <select name="blood_type" id="blood_type" class="visually-hidden-select">
                         <option value="" disabled selected>Select Blood Type</option>
                         {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
                             <option value="{{ type }}">{{ type }}</option>
                         {% endfor %}
                     </select>
+                    <!-- Visual Blood Grid -->
+                    <div class="blood-grid">
+                        {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <button type="button" class="blood-btn" id="btn-blood-{{ type }}" onclick="selectBloodType(this, '{{ type }}')">{{ type }}</button>
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0.5rem;">
                     <label for="quantity_ml">Quantity Required (ml)</label>
                     <input type="number" name="quantity_ml" id="quantity_ml" class="form-control" placeholder="e.g. 450" min="1">
                 </div>
@@ -163,23 +430,29 @@
 
             <!-- Organ Request Custom Fields -->
             <div id="organInputs" class="req-type-box">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; color: var(--warning);">
-                    <i class="fa-solid fa-lungs" style="margin-right: 0.3rem;"></i> Organ Transplant Details
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--border-subtle); padding-bottom: 0.5rem; color: var(--secondary); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-lungs"></i> Organ Transplant Details
                 </h3>
                 
-                <div class="form-group">
-                    <label for="organ_type">Organ Required</label>
-                    <select name="organ_type" id="organ_type" class="form-control">
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                    <label>Organ Required</label>
+                    <select name="organ_type" id="organ_type" class="visually-hidden-select">
                         <option value="" disabled selected>Select Organ Type</option>
                         {% for organ in ['Kidney', 'Liver', 'Lung', 'Heart', 'Pancreas', 'Cornea'] %}
                             <option value="{{ organ }}">{{ organ }}</option>
                         {% endfor %}
                     </select>
+                    <!-- Visual Organ Grid -->
+                    <div class="organ-grid">
+                        {% for organ in ['Kidney', 'Liver', 'Lung', 'Heart', 'Pancreas', 'Cornea'] %}
+                            <button type="button" class="organ-btn" id="btn-organ-{{ organ }}" onclick="selectOrgan(this, '{{ organ }}')">{{ organ }}</button>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
             <!-- Core Request Fields -->
-            <div style="margin-top: 1.5rem;">
+            <div style="margin-top: 1.8rem;">
                 <div class="form-group">
                     <label for="hospital_name">Target Hospital</label>
                     <input type="text" name="hospital_name" id="hospital_name" class="form-control" placeholder="e.g. City General Multi-Speciality" required>
@@ -191,21 +464,87 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="urgency_level">Urgency Level</label>
-                    <select name="urgency_level" id="urgency_level" class="form-control" required>
+                    <label>Urgency Level</label>
+                    <select name="urgency_level" id="urgency_level" class="visually-hidden-select" required>
                         <option value="Normal">Normal</option>
                         <option value="Urgent">Urgent</option>
                         <option value="Critical" selected>Critical</option>
                     </select>
+                    
+                    <!-- Visual Urgency Grid -->
+                    <div class="urgency-grid">
+                        <button type="button" class="urgency-btn urgency-normal" id="urg-normal" onclick="selectUrgency('Normal')">
+                            <i class="fa-solid fa-circle-info"></i> Normal
+                        </button>
+                        <button type="button" class="urgency-btn urgency-urgent" id="urg-urgent" onclick="selectUrgency('Urgent')">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Urgent
+                        </button>
+                        <button type="button" class="urgency-btn urgency-critical active" id="urg-critical" onclick="selectUrgency('Critical')">
+                            <i class="fa-solid fa-circle-exclamation"></i> Critical
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">Submit Request to Matching Queue</button>
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-square-plus"></i> Submit Request to Matching Queue</button>
         </form>
     </div>
 </div>
 
 <script>
+    // Sync Category Selection
+    function selectCategory(category) {
+        document.getElementById('cat-blood').classList.remove('active');
+        document.getElementById('cat-organ').classList.remove('active');
+
+        var select = document.getElementById("request_type");
+        select.value = category;
+        
+        if (category === 'Blood') {
+            document.getElementById('cat-blood').classList.add('active');
+        } else {
+            document.getElementById('cat-organ').classList.add('active');
+        }
+
+        // Trigger original dynamic display/required toggle
+        toggleRequestTypeInputs();
+    }
+
+    // Sync Blood Type Selector
+    function selectBloodType(btn, type) {
+        document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        var select = document.getElementById("blood_type");
+        select.value = type;
+    }
+
+    // Sync Organ Selector
+    function selectOrgan(btn, organ) {
+        document.querySelectorAll('.organ-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        var select = document.getElementById("organ_type");
+        select.value = organ;
+    }
+
+    // Sync Urgency Selector
+    function selectUrgency(level) {
+        document.querySelectorAll('.urgency-btn').forEach(b => b.classList.remove('active'));
+        
+        var select = document.getElementById("urgency_level");
+        select.value = level;
+        
+        if (level === 'Normal') {
+            document.getElementById('urg-normal').classList.add('active');
+        } else if (level === 'Urgent') {
+            document.getElementById('urg-urgent').classList.add('active');
+        } else if (level === 'Critical') {
+            document.getElementById('urg-critical').classList.add('active');
+        }
+    }
+
+    // Main Toggle logic (kept functional as requested)
     function toggleRequestTypeInputs() {
         var requestType = document.getElementById("request_type").value;
         var bloodInputs = document.getElementById("bloodInputs");
@@ -238,5 +577,15 @@
             organTypeSelect.removeAttribute("required");
         }
     }
+
+    // Run initial category setup if something is pre-selected (fallback)
+    document.addEventListener("DOMContentLoaded", function() {
+        var preVal = document.getElementById("request_type").value;
+        if (preVal === "Blood") {
+            selectCategory('Blood');
+        } else if (preVal === "Organ") {
+            selectCategory('Organ');
+        }
+    });
 </script>
 {% endblock %}

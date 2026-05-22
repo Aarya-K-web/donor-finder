@@ -4,36 +4,55 @@
 
 {% block extra_css %}
 <style>
-    .donor-register-container {
-        max-width: 550px;
-        margin: 3rem auto;
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
+    .donor-register-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .donor-card {
+        max-width: 580px;
+        width: 100%;
+        padding: 3rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-header i {
+        color: var(--primary); /* Deep red */
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+        display: inline-block;
     }
 
     .form-title {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-    }
-
-    .form-title i {
+        font-size: 1.8rem;
+        font-weight: 700;
         color: var(--secondary);
-        filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.2));
+        margin-bottom: 0.5rem;
     }
 
     .form-subtitle {
-        color: var(--text-secondary);
-        text-align: center;
-        margin-bottom: 2rem;
+        color: var(--text-body);
         font-size: 0.95rem;
     }
 
     .form-group {
         margin-bottom: 1.5rem;
+        text-align: left;
     }
 
     .form-group label {
@@ -41,17 +60,17 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-primary);
+        color: var(--text-heading);
     }
 
     .form-control {
         width: 100%;
-        background-color: rgba(11, 15, 25, 0.6);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
         padding: 0.8rem 1rem;
-        color: white;
-        font-family: var(--font-main);
+        color: var(--text-heading);
+        font-family: var(--font-body);
         font-size: 1rem;
         transition: var(--transition);
     }
@@ -59,129 +78,202 @@
     .form-control:focus {
         outline: none;
         border-color: var(--secondary);
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
     }
 
-    select.form-control option {
-        background-color: var(--bg-dark);
+    /* Visual Blood Type Grid */
+    .blood-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .blood-btn {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: 0.8rem;
+        font-family: var(--font-headings);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-heading);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+    }
+
+    .blood-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background-color: rgba(214, 40, 40, 0.02);
+    }
+
+    .blood-btn.active {
+        background-color: var(--primary);
         color: white;
+        border-color: var(--primary);
+        box-shadow: 0 4px 10px rgba(214, 40, 40, 0.2);
     }
 
-    .checkbox-grid {
+    /* Organ Chips Grid */
+    .organ-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
         margin-top: 0.5rem;
-        background-color: rgba(255, 255, 255, 0.01);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1rem;
     }
 
-    .checkbox-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text-secondary);
+    .chip-label {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 50px;
+        padding: 0.6rem 1rem;
         font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-body);
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
         transition: var(--transition);
+        user-select: none;
     }
 
-    .checkbox-label:hover {
-        color: var(--text-primary);
+    .chip-label input {
+        display: none;
     }
 
-    .checkbox-label input {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--secondary);
-        cursor: pointer;
+    .chip-label:hover {
+        border-color: var(--primary);
+        color: var(--primary);
     }
 
-    .radio-group {
+    .chip-label.active {
+        background-color: rgba(214, 40, 40, 0.08);
+        border-color: var(--primary);
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* Availability Toggle Chips */
+    .availability-group {
         display: flex;
-        gap: 1.5rem;
+        gap: 1rem;
         margin-top: 0.5rem;
     }
 
-    .radio-label {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
+    .avail-label {
+        flex: 1;
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.8rem;
         cursor: pointer;
-        color: var(--text-secondary);
-        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        transition: var(--transition);
+        font-weight: 600;
+        color: var(--text-body);
     }
 
-    .radio-label input {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--secondary);
-        cursor: pointer;
+    .avail-label input {
+        display: none;
+    }
+
+    .avail-label:hover {
+        border-color: var(--secondary);
+    }
+
+    .avail-label.active-yes {
+        background-color: rgba(45, 106, 79, 0.08);
+        border-color: var(--success-green);
+        color: var(--success-green);
+    }
+
+    .avail-label.active-no {
+        background-color: rgba(214, 40, 40, 0.05);
+        border-color: var(--primary);
+        color: var(--primary);
     }
 
     .btn-submit {
-        background-color: var(--secondary);
+        background-color: var(--primary); /* Deep red submit button */
         color: white;
         border: none;
         width: 100%;
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: 50px; /* rounded-pill */
         font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
         margin-top: 1.5rem;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        box-shadow: 0 4px 15px rgba(214, 40, 40, 0.25);
+        font-family: var(--font-headings);
     }
 
     .btn-submit:hover {
-        background-color: #059669;
+        background-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 6px 20px rgba(214, 40, 40, 0.35);
+    }
+
+    @media (max-width: 576px) {
+        .blood-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .organ-grid {
+            grid-template-columns: 1fr;
+        }
+        .availability-group {
+            flex-direction: column;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="donor-register-container">
-    <div class="card">
-        <h1 class="form-title"><i class="fa-solid fa-heart"></i> Register as Donor</h1>
-        <p class="form-subtitle">Add your medical profiles so compatible recipients in need can find you.</p>
+<div class="donor-register-wrapper">
+    <div class="donor-card">
+        <div class="form-header">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h1 class="form-title">Register as Donor</h1>
+            <p class="form-subtitle">Add your medical parameters to help compatible patients in critical emergencies</p>
+        </div>
         
         <form method="POST" action="{{ url_for('register_donor') }}">
             <!-- Blood Type -->
             <div class="form-group">
-                <label for="blood_type">Blood Type</label>
-                <select name="blood_type" id="blood_type" class="form-control" required>
+                <label>Blood Type</label>
+                <!-- Hidden select for Flask logic -->
+                <select name="blood_type" id="blood_type" class="form-control" style="display: none;" required>
                     <option value="" disabled selected>Select Blood Type</option>
                     {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
                         <option value="{{ type }}">{{ type }}</option>
                     {% endfor %}
                 </select>
+                <!-- Visual Blood Grid -->
+                <div class="blood-grid">
+                    {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                        <button type="button" class="blood-btn" onclick="selectBloodType(this, '{{ type }}')">{{ type }}</button>
+                    {% endfor %}
+                </div>
             </div>
 
             <!-- Organs Checkboxes -->
             <div class="form-group">
-                <label>Organs Willing to Donate</label>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="organs" value="Kidney">
-                        <span>Kidneys</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="organs" value="Liver">
-                        <span>Liver</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="organs" value="Cornea">
-                        <span>Eyes (Cornea)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="organs" value="Heart">
-                        <span>Heart</span>
-                    </label>
+                <label>Organs Willing to Donate (Select as toggle chips)</label>
+                <div class="organ-grid">
+                    {% for item in [('Kidney', 'Kidneys'), ('Liver', 'Liver'), ('Cornea', 'Eyes (Cornea)'), ('Heart', 'Heart')] %}
+                        <label class="chip-label" onclick="toggleOrganChip(this)">
+                            <input type="checkbox" name="organs" value="{{ item[0] }}">
+                            <span><i class="fa-solid fa-plus" style="font-size: 0.75rem; margin-right: 0.2rem;"></i>{{ item[1] }}</span>
+                        </label>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -194,20 +286,62 @@
             <!-- Availability Yes/No -->
             <div class="form-group">
                 <label>Are you currently available to donate?</label>
-                <div class="radio-group">
-                    <label class="radio-label">
+                <div class="availability-group">
+                    <label class="avail-label active-yes" id="avail-yes-label" onclick="selectAvailability('Yes')">
                         <input type="radio" name="availability" value="Yes" checked>
-                        <span>Yes (Available)</span>
+                        <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+                        <span>Yes, Ready to Donate</span>
                     </label>
-                    <label class="radio-label">
+                    <label class="avail-label" id="avail-no-label" onclick="selectAvailability('No')">
                         <input type="radio" name="availability" value="No">
-                        <span>No (Unavailable)</span>
+                        <i class="fa-solid fa-circle-minus" style="font-size: 1.2rem;"></i>
+                        <span>No, On Hold</span>
                     </label>
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">Activate Donor Profile</button>
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-heart"></i> Activate Donor Profile</button>
         </form>
     </div>
 </div>
+
+<script>
+    // Handles blood type grid click sync
+    function selectBloodType(btn, val) {
+        document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        var select = document.getElementById("blood_type");
+        select.value = val;
+    }
+
+    // Handles organ checkbox visual state
+    function toggleOrganChip(label) {
+        setTimeout(function() {
+            var checkbox = label.querySelector('input');
+            var icon = label.querySelector('i');
+            if (checkbox.checked) {
+                label.classList.add('active');
+                if (icon) icon.className = "fa-solid fa-check";
+            } else {
+                label.classList.remove('active');
+                if (icon) icon.className = "fa-solid fa-plus";
+            }
+        }, 30);
+    }
+
+    // Handles availability radio options styled as toggle cards
+    function selectAvailability(status) {
+        var yesLabel = document.getElementById("avail-yes-label");
+        var noLabel = document.getElementById("avail-no-label");
+
+        if (status === 'Yes') {
+            yesLabel.className = "avail-label active-yes";
+            noLabel.className = "avail-label";
+        } else {
+            yesLabel.className = "avail-label";
+            noLabel.className = "avail-label active-no";
+        }
+    }
+</script>
 {% endblock %}

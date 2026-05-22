@@ -4,25 +4,31 @@
 
 {% block extra_css %}
 <style>
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
     .success-container {
         max-width: 650px;
-        margin: 3rem auto;
+        margin: 4rem auto;
         text-align: center;
+        padding: 0 1rem;
     }
 
     .success-icon-holder {
         width: 80px;
         height: 80px;
-        background-color: rgba(16, 185, 129, 0.12);
-        border: 2px solid rgba(16, 185, 129, 0.25);
-        color: var(--secondary);
+        background-color: var(--success-green-bg);
+        border: 2px solid rgba(45, 106, 79, 0.25);
+        color: var(--success-green);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
-        margin: 0 auto 1.5rem auto;
-        filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.25));
+        font-size: 2.8rem;
+        margin: 0 auto 1.8rem auto;
+        box-shadow: 0 8px 24px rgba(45, 106, 79, 0.15);
         animation: scaleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -33,29 +39,28 @@
 
     .success-title {
         font-size: 2.2rem;
-        font-weight: 800;
+        font-weight: 700;
         margin-bottom: 0.5rem;
-        color: white;
+        color: var(--secondary); /* Deep Blue */
+        font-family: var(--font-headings);
     }
 
     .success-desc {
-        color: var(--text-secondary);
+        color: var(--text-body);
         font-size: 1.05rem;
         margin-bottom: 2.5rem;
     }
 
     /* Donor Contact Card */
     .contact-card {
-        background: rgba(22, 28, 45, 0.5);
-        border: 1px solid var(--border-color);
+        background: white;
+        border: 1px solid var(--border-subtle);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 2.5rem;
         text-align: left;
         margin-bottom: 2.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-top: 3px solid var(--secondary);
+        box-shadow: var(--shadow-subtle);
+        border-top: 4px solid var(--secondary); /* Deep Blue Brand Header Line */
         animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -68,50 +73,55 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1.5px solid var(--border-subtle);
         padding-bottom: 1.25rem;
         margin-bottom: 1.5rem;
     }
 
     .donor-name {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 700;
-        color: white;
-        margin-bottom: 0.25rem;
+        color: var(--secondary);
+        font-family: var(--font-headings);
     }
 
     .donor-sub {
         font-size: 0.85rem;
-        color: var(--text-secondary);
+        color: var(--text-body);
         font-weight: 500;
+        margin-top: 0.2rem;
     }
 
+    /* Badges */
     .badge {
         display: inline-flex;
         align-items: center;
         padding: 0.35rem 0.8rem;
-        border-radius: 9999px;
+        border-radius: 50px;
         font-size: 0.8rem;
-        font-weight: 600;
+        font-weight: 700;
         gap: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .badge-blood {
-        background-color: rgba(229, 9, 20, 0.12);
-        color: #f87171;
-        border: 1px solid rgba(229, 9, 20, 0.25);
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 40, 40, 0.15);
     }
 
     .organ-tag {
         display: inline-block;
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-secondary);
-        padding: 0.2rem 0.5rem;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        margin-right: 0.3rem;
-        margin-bottom: 0.3rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background-color: var(--bg-section);
+        color: var(--secondary);
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        margin-right: 0.4rem;
+        margin-bottom: 0.4rem;
+        border: 1px solid var(--border-subtle);
+        font-weight: 600;
     }
 
     /* Contact Details Grid */
@@ -128,17 +138,17 @@
     }
 
     .detail-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        color: var(--text-secondary);
+        color: var(--text-body);
         letter-spacing: 0.5px;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     .detail-value {
         font-size: 1.05rem;
-        color: white;
-        font-weight: 600;
+        color: var(--text-heading);
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -148,52 +158,58 @@
         color: var(--secondary);
     }
 
+    /* SQL Trigger Success Notice */
     .audit-note {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px dashed rgba(255, 255, 255, 0.08);
+        background: rgba(2, 62, 138, 0.05);
+        border: 1px dashed rgba(2, 62, 138, 0.2);
         border-radius: 12px;
-        padding: 1rem;
-        margin-top: 1.5rem;
-        font-size: 0.85rem;
-        color: var(--text-secondary);
+        padding: 1.2rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: var(--secondary);
         display: flex;
-        gap: 0.6rem;
+        gap: 0.8rem;
         align-items: center;
+        line-height: 1.5;
     }
 
     .audit-note i {
         color: var(--secondary);
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
 
-    /* CTA Button */
+    /* Return Button */
     .btn-return {
-        background-color: var(--secondary);
+        background-color: var(--primary);
         color: white;
         border: none;
-        padding: 0.9rem 2rem;
-        border-radius: 12px;
-        font-size: 1rem;
+        padding: 0.9rem 2.5rem;
+        border-radius: 50px; /* rounded-pill style */
+        font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        gap: 0.6rem;
+        box-shadow: 0 4px 12px rgba(214, 40, 40, 0.25);
         text-decoration: none;
+        font-family: var(--font-headings);
     }
 
     .btn-return:hover {
-        background-color: #059669;
+        background-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 6px 18px rgba(214, 40, 40, 0.35);
     }
 
     @media (max-width: 576px) {
         .details-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.25rem;
+        }
+        .contact-card {
+            padding: 1.5rem;
         }
     }
 </style>
@@ -212,7 +228,7 @@
     <div class="contact-card">
         <div class="card-header">
             <div>
-                <div class="donor-name">{{ donor.donor_name }}</div>
+                <h2 class="donor-name">{{ donor.donor_name }}</h2>
                 <div class="donor-sub">Donor Profile ID: #{{ donor.donor_id }}</div>
             </div>
             
@@ -245,22 +261,22 @@
 
             <div class="detail-item">
                 <div class="detail-label">Emergency Category</div>
-                <div class="detail-value" style="color: var(--warning);">
+                <div class="detail-value" style="color: var(--primary);">
                     {% if req_type == 'Blood' %}
                         <i class="fa-solid fa-droplet" style="color: var(--primary);"></i> Blood Transfusion
                     {% else %}
-                        <i class="fa-solid fa-lungs"></i> Organ Transplant
+                        <i class="fa-solid fa-lungs" style="color: #fd7e14;"></i> Organ Transplant
                     {% endif %}
                 </div>
             </div>
         </div>
         
         {% if donor.organs_willing_to_donate %}
-            <div style="margin-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.25rem;">
-                <div class="detail-label" style="margin-bottom: 0.5rem;">Registered Organs Willing to Donate</div>
-                <div>
+            <div style="margin-top: 1.8rem; border-top: 1.5px solid var(--border-subtle); padding-top: 1.5rem;">
+                <div class="detail-label" style="margin-bottom: 0.6rem;">Registered Organs Willing to Donate</div>
+                <div style="display: flex; flex-wrap: wrap;">
                     {% for organ in donor.organs_willing_to_donate.split(',') %}
-                        <span class="organ-tag" style="margin-bottom: 0;">{{ organ }}</span>
+                        <span class="organ-tag">{{ organ.strip() }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -275,7 +291,7 @@
     </div>
     
     <a href="{{ url_for('dashboard') }}" class="btn-return">
-        <i class="fa-solid fa-gauge"></i> Return to Dashboard
+        <i class="fa-solid fa-gauge-high"></i> Return to Dashboard
     </a>
 </div>
 {% endblock %}

@@ -4,27 +4,38 @@
 
 {% block extra_css %}
 <style>
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
+    .match-wrapper {
+        padding: 3rem 0;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
     .match-header {
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
     }
 
     .match-title {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--secondary); /* Deep Blue */
         display: flex;
         align-items: center;
         gap: 0.6rem;
     }
 
     .match-title i {
-        color: var(--primary);
-        filter: drop-shadow(0 0 4px var(--primary-glow));
+        color: var(--primary); /* Deep Red heart logo */
     }
 
     .subtitle {
-        color: var(--text-secondary);
-        margin-bottom: 2rem;
+        color: var(--text-body);
+        font-size: 1rem;
+        margin-top: 0.3rem;
     }
 
     /* Grid Layout */
@@ -37,24 +48,38 @@
 
     /* Request Summary Card */
     .req-summary-card {
-        padding: 1.75rem;
-        border-left: 4px solid var(--primary);
+        padding: 2rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .req-summary-card.blood-border {
+        border-left: 5px solid var(--primary);
+    }
+
+    .req-summary-card.organ-border {
+        border-left: 5px solid #fd7e14;
     }
 
     .summary-title {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         font-weight: 700;
-        margin-bottom: 1.25rem;
+        color: var(--text-heading);
+        margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        border-bottom: 1.5px solid var(--border-subtle);
+        padding-bottom: 0.8rem;
     }
 
     .summary-item {
         display: flex;
         justify-content: space-between;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--border-subtle);
         font-size: 0.95rem;
     }
 
@@ -63,21 +88,41 @@
     }
 
     .summary-label {
-        color: var(--text-secondary);
-        font-weight: 500;
+        color: var(--text-body);
+        font-weight: 600;
     }
 
     .summary-value {
-        font-weight: 600;
-        color: var(--text-primary);
+        font-weight: 700;
+        color: var(--secondary);
     }
 
-    /* Table Results Layout */
+    /* Tables & Cards */
+    .compat-card {
+        padding: 2rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .compat-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-heading);
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1.5px solid var(--border-subtle);
+        padding-bottom: 0.8rem;
+    }
+
     .table-holder {
         overflow-x: auto;
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        background: rgba(22, 28, 45, 0.4);
+        border-radius: 12px;
+        border: 1px solid var(--border-subtle);
+        background: white;
         margin-top: 1rem;
     }
 
@@ -89,20 +134,22 @@
     }
 
     th {
-        background-color: rgba(11, 15, 25, 0.6);
-        color: var(--text-secondary);
-        font-weight: 600;
+        background-color: var(--bg-section);
+        color: var(--secondary);
+        font-weight: 700;
         padding: 1.2rem 1.5rem;
         text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-        border-bottom: 1px solid var(--border-color);
+        font-size: 0.75rem;
+        letter-spacing: 0.8px;
+        border-bottom: 1.5px solid var(--border-subtle);
+        font-family: var(--font-headings);
     }
 
     td {
         padding: 1.2rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--text-body);
+        vertical-align: middle;
     }
 
     tr:last-child td {
@@ -110,96 +157,153 @@
     }
 
     tr:hover td {
-        background-color: rgba(255, 255, 255, 0.02);
+        background-color: rgba(2, 62, 138, 0.01);
     }
 
     /* Badges */
     .badge {
         display: inline-flex;
         align-items: center;
-        padding: 0.35rem 0.8rem;
-        border-radius: 9999px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        gap: 0.4rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        gap: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .badge-blood {
-        background-color: rgba(229, 9, 20, 0.12);
-        color: #f87171;
-        border: 1px solid rgba(229, 9, 20, 0.25);
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 40, 40, 0.15);
     }
 
     .organ-tag {
         display: inline-block;
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-secondary);
+        background-color: var(--bg-section);
+        color: var(--secondary);
         padding: 0.2rem 0.5rem;
-        border-radius: 6px;
-        font-size: 0.8rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
         margin-right: 0.3rem;
         margin-bottom: 0.3rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
+        font-weight: 600;
     }
 
     .badge-urgency-critical {
-        background-color: rgba(239, 68, 68, 0.15);
-        color: #f87171;
-        border: 1px solid rgba(239, 68, 68, 0.25);
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 40, 40, 0.15);
     }
 
     .badge-urgency-urgent {
-        background-color: rgba(245, 158, 11, 0.15);
-        color: #fbbf24;
-        border: 1px solid rgba(245, 158, 11, 0.25);
+        background-color: rgba(253, 126, 20, 0.08);
+        color: #fd7e14;
+        border: 1px solid rgba(253, 126, 20, 0.15);
     }
 
     .badge-urgency-normal {
-        background-color: rgba(59, 130, 246, 0.15);
-        color: #60a5fa;
-        border: 1px solid rgba(59, 130, 246, 0.25);
+        background-color: rgba(2, 62, 138, 0.08);
+        color: var(--secondary);
+        border: 1px solid rgba(2, 62, 138, 0.15);
     }
 
-    /* Button styles */
+    .badge-status {
+        background-color: var(--success-green-bg);
+        color: var(--success-green);
+        border: 1px solid rgba(45, 106, 79, 0.15);
+    }
+
+    /* Button Action styling */
     .btn-match {
-        background-color: var(--secondary);
-        color: white;
+        background-color: var(--primary);
+        color: white !important;
         border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
+        padding: 0.55rem 1.2rem;
+        border-radius: 50px; /* rounded-pill style */
+        font-family: var(--font-headings);
         font-weight: 700;
+        font-size: 0.85rem;
         cursor: pointer;
         transition: var(--transition);
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        box-shadow: 0 4px 10px rgba(214, 40, 40, 0.2);
     }
 
     .btn-match:hover {
-        background-color: #059669;
+        background-color: var(--primary-hover);
         transform: translateY(-1px);
-        box-shadow: 0 6px 15px rgba(16, 185, 129, 0.35);
+        box-shadow: 0 6px 15px rgba(214, 40, 40, 0.35);
+    }
+
+    .btn-secondary-pill {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        color: var(--text-body) !important;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-family: var(--font-headings);
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: var(--transition);
+    }
+
+    .btn-secondary-pill:hover {
+        border-color: var(--secondary);
+        color: var(--secondary) !important;
+        background-color: rgba(2, 62, 138, 0.02);
     }
 
     /* Info Banner */
     .banner {
-        background: rgba(16, 185, 129, 0.05);
-        border: 1px solid rgba(16, 185, 129, 0.15);
+        background: rgba(2, 62, 138, 0.05);
+        border: 1px solid rgba(2, 62, 138, 0.15);
         border-radius: 12px;
-        padding: 1rem;
+        padding: 1.2rem;
         margin-bottom: 1.5rem;
-        color: #a7f3d0;
-        font-size: 0.9rem;
+        color: var(--secondary);
+        font-size: 0.95rem;
         display: flex;
         gap: 0.8rem;
         align-items: center;
+        line-height: 1.5;
     }
 
     .banner i {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         color: var(--secondary);
+    }
+
+    .empty-compat {
+        text-align: center;
+        padding: 5rem 2rem;
+        color: var(--text-body);
+    }
+
+    .empty-compat i {
+        font-size: 3rem;
+        color: var(--border-subtle);
+        margin-bottom: 1.5rem;
+        display: inline-block;
+    }
+
+    .empty-compat h3 {
+        font-size: 1.4rem;
+        color: var(--secondary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-compat p {
+        max-width: 450px;
+        margin: 0 auto 2rem auto;
     }
 
     @media (max-width: 992px) {
@@ -211,150 +315,154 @@
 {% endblock %}
 
 {% block content %}
-<div class="match-header">
-    <h1 class="match-title"><i class="fa-solid fa-bezier-curve"></i> Compatibility Matchmaker</h1>
-    <p class="subtitle">Run real-time medical matching rules in the database to align active donor profiles in the same region.</p>
-</div>
-
-<div class="match-grid">
-    <!-- Left: Request Summary Card -->
-    <div class="card req-summary-card">
-        <h3 class="summary-title">
-            {% if req_type == 'Blood' %}
-                <i class="fa-solid fa-droplet" style="color: var(--primary);"></i> Blood Emergency
-            {% else %}
-                <i class="fa-solid fa-lungs" style="color: var(--warning);"></i> Organ Emergency
-            {% endif %}
-        </h3>
-        
-        <div class="summary-item">
-            <span class="summary-label">Recipient</span>
-            <span class="summary-value">{{ request_info.recipient_name }}</span>
-        </div>
-        
-        <div class="summary-item">
-            <span class="summary-label">Category</span>
-            <span class="summary-value">{{ req_type }} Request</span>
-        </div>
-        
-        <div class="summary-item">
-            <span class="summary-label">Target Details</span>
-            <span class="summary-value">
-                {% if req_type == 'Blood' %}
-                    Blood Type <span class="badge badge-blood" style="margin-left: 0.3rem;">{{ request_info.blood_type }}</span>
-                {% else %}
-                    <span class="organ-tag" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.2); margin: 0;">{{ request_info.organ_type }}</span>
-                {% endif %}
-            </span>
-        </div>
-        
-        {% if req_type == 'Blood' %}
-        <div class="summary-item">
-            <span class="summary-label">Quantity Needed</span>
-            <span class="summary-value">{{ request_info.quantity_ml }} ml</span>
-        </div>
-        {% endif %}
-        
-        <div class="summary-item">
-            <span class="summary-label">Hospital</span>
-            <span class="summary-value">{{ request_info.hospital_name }}</span>
-        </div>
-        
-        <div class="summary-item">
-            <span class="summary-label">City Region</span>
-            <span class="summary-value"><i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.3rem;"></i>{{ request_info.city }}</span>
-        </div>
-        
-        <div class="summary-item">
-            <span class="summary-label">Urgency Level</span>
-            <span class="summary-value">
-                <span class="badge badge-urgency-{{ request_info.urgency_level|lower }}">
-                    {{ request_info.urgency_level }}
-                </span>
-            </span>
-        </div>
+<div class="match-wrapper">
+    <div class="match-header">
+        <h1 class="match-title"><i class="fa-solid fa-bezier-curve"></i> Compatibility Matchmaker</h1>
+        <p class="subtitle">Process active real-time clinical matching rules in the database to align emergency requirements with donor profiles.</p>
     </div>
 
-    <!-- Right: Compatible Donors Table -->
-    <div class="card">
-        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
-            <span>Compatible Available Donors</span>
-            <span class="badge badge-status" style="background-color: rgba(16, 185, 129, 0.1); color: var(--secondary); border-color: rgba(16, 185, 129, 0.2);">
-                {{ donors|length }} Match(es) Found
-            </span>
-        </h2>
-        
-        {% if donors %}
-            <div class="banner">
-                <i class="fa-solid fa-circle-nodes"></i>
-                <div>
-                    <strong>Medical Compatibility Matched:</strong> Displaying available donors in <strong>{{ request_info.city }}</strong> who are compatible with this request.
-                </div>
+    <div class="match-grid">
+        <!-- Left: Request Summary Card -->
+        <div class="card req-summary-card {% if req_type == 'Blood' %}blood-border{% else %}organ-border{% endif %}">
+            <h3 class="summary-title">
+                {% if req_type == 'Blood' %}
+                    <i class="fa-solid fa-droplet" style="color: var(--primary);"></i> Blood Emergency
+                {% else %}
+                    <i class="fa-solid fa-lungs" style="color: #fd7e14;"></i> Organ Emergency
+                {% endif %}
+            </h3>
+            
+            <div class="summary-item">
+                <span class="summary-label">Recipient Name</span>
+                <span class="summary-value">{{ request_info.recipient_name }}</span>
             </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Category</span>
+                <span class="summary-value">{{ req_type }} Request</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Target Details</span>
+                <span class="summary-value">
+                    {% if req_type == 'Blood' %}
+                        Blood Type <span class="badge badge-blood" style="margin-left: 0.3rem;">{{ request_info.blood_type }}</span>
+                    {% else %}
+                        <span class="organ-tag" style="background-color: rgba(253, 126, 20, 0.08); color: #fd7e14; border-color: rgba(253, 126, 20, 0.15); margin: 0; font-weight: 700;">{{ request_info.organ_type }}</span>
+                    {% endif %}
+                </span>
+            </div>
+            
+            {% if req_type == 'Blood' %}
+            <div class="summary-item">
+                <span class="summary-label">Quantity Needed</span>
+                <span class="summary-value">{{ request_info.quantity_ml }} ml</span>
+            </div>
+            {% endif %}
+            
+            <div class="summary-item">
+                <span class="summary-label">Target Hospital</span>
+                <span class="summary-value" style="text-align: right;">{{ request_info.hospital_name }}</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">City Region</span>
+                <span class="summary-value">
+                    <i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.3rem;"></i>{{ request_info.city }}
+                </span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Urgency Level</span>
+                <span class="summary-value">
+                    <span class="badge badge-urgency-{{ request_info.urgency_level|lower }}">
+                        {{ request_info.urgency_level }}
+                    </span>
+                </span>
+            </div>
+        </div>
 
-            <div class="table-holder">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Donor</th>
-                            <th>Blood Type</th>
-                            <th>Organs Willing</th>
-                            <th>Location</th>
-                            <th style="text-align: right;">Match Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for donor in donors %}
-                            <tr>
-                                <td>
-                                    <div style="font-weight: 600;">{{ donor.donor_name }}</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Donor #{{ donor.donor_id }}</div>
-                                </td>
-                                <td>
-                                    <span class="badge badge-blood">
-                                        <i class="fa-solid fa-droplet"></i> {{ donor.blood_type }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {% if donor.organs_willing_to_donate %}
-                                        {% for organ in donor.organs_willing_to_donate.split(',') %}
-                                            <span class="organ-tag">{{ organ }}</span>
-                                        {% endfor %}
-                                    {% else %}
-                                        <span style="color: var(--text-secondary); font-style: italic; font-size: 0.8rem;">Blood Profile</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.2rem; font-size: 0.85rem;"></i>
-                                    {{ donor.city }}
-                                </td>
-                                <td style="text-align: right;">
-                                    <form method="POST" action="{{ url_for('confirm_match') }}" style="margin: 0; display: inline;">
-                                        <input type="hidden" name="donor_id" value="{{ donor.donor_id }}">
-                                        <input type="hidden" name="req_type" value="{{ req_type }}">
-                                        <input type="hidden" name="req_id" value="{{ request_info.request_id }}">
-                                        <button type="submit" class="btn-match">
-                                            <i class="fa-solid fa-circle-check"></i> Select & Match
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <div style="text-align: center; padding: 5rem 2rem; color: var(--text-secondary);">
-                <i class="fa-solid fa-users-slash" style="font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.15;"></i>
-                <h3>No Matching Donors in Same City</h3>
-                <p>There are currently no active, available donors compatible with this emergency category in <strong>{{ request_info.city }}</strong>.</p>
-                <div style="margin-top: 2rem;">
-                    <a href="{{ url_for('dashboard') }}" class="btn-match" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); box-shadow: none;">
-                        <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
-                    </a>
+        <!-- Right: Compatible Donors Table -->
+        <div class="card compat-card">
+            <h2 class="compat-title">
+                <span>Compatible Available Donors</span>
+                <span class="badge badge-status">
+                    {{ donors|length }} Match(es) Found
+                </span>
+            </h2>
+            
+            {% if donors %}
+                <div class="banner">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                    <div>
+                        <strong>Ecosystem Alignment Verified:</strong> Displaying available donors in <strong>{{ request_info.city }}</strong> who are compatible with this request's specifications.
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+
+                <div class="table-holder">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Donor Name</th>
+                                <th>Blood Type</th>
+                                <th>Organs Willing</th>
+                                <th>Location</th>
+                                <th style="text-align: right;">Match Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for donor in donors %}
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 700; color: var(--secondary);">{{ donor.donor_name }}</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-body); margin-top: 0.1rem;">Donor #{{ donor.donor_id }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-blood">
+                                            <i class="fa-solid fa-droplet"></i> {{ donor.blood_type }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if donor.organs_willing_to_donate %}
+                                            {% for organ in donor.organs_willing_to_donate.split(',') %}
+                                                <span class="organ-tag">{{ organ.strip() }}</span>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span style="color: var(--text-body); font-style: italic; font-size: 0.8rem;">Blood Profile Only</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.2rem; font-size: 0.85rem;"></i>
+                                        <strong>{{ donor.city }}</strong>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <form method="POST" action="{{ url_for('confirm_match') }}" style="margin: 0; display: inline;">
+                                            <input type="hidden" name="donor_id" value="{{ donor.donor_id }}">
+                                            <input type="hidden" name="req_type" value="{{ req_type }}">
+                                            <input type="hidden" name="req_id" value="{{ request_info.request_id }}">
+                                            <button type="submit" class="btn-match">
+                                                <i class="fa-solid fa-circle-check"></i> Select & Match
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-compat">
+                    <i class="fa-solid fa-users-slash" style="opacity: 0.15; color: var(--text-body);"></i>
+                    <h3>No Compatible Donors in City</h3>
+                    <p>There are currently no active, available donors compatible with this emergency category in <strong>{{ request_info.city }}</strong>.</p>
+                    <div>
+                        <a href="{{ url_for('dashboard') }}" class="btn-secondary-pill">
+                            <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

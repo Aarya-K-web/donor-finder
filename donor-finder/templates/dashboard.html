@@ -4,131 +4,168 @@
 
 {% block extra_css %}
 <style>
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
+    .dashboard-wrapper {
+        padding: 3rem 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
     .dash-header {
         margin-bottom: 2.5rem;
     }
 
     .dash-header h1 {
         font-size: 2.2rem;
-        font-weight: 800;
+        font-weight: 700;
+        color: var(--secondary); /* Deep Blue */
         display: flex;
         align-items: center;
         gap: 0.6rem;
     }
 
     .dash-header h1 i {
-        color: var(--primary);
+        color: var(--primary); /* Heart icon accent */
+    }
+
+    .dash-header p {
+        color: var(--text-body);
+        font-size: 1rem;
+        margin-top: 0.3rem;
     }
 
     /* Stats Grid */
     .stats-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
         margin-bottom: 3rem;
     }
 
-    .stat-box {
+    .stat-card {
+        background-color: white;
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        padding: 1.8rem;
+        box-shadow: var(--shadow-subtle);
         display: flex;
         align-items: center;
-        gap: 1.25rem;
-        padding: 1.5rem;
+        gap: 1.5rem;
+        transition: var(--transition);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
     }
 
     .stat-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+        flex-shrink: 0;
     }
 
     .stat-icon.donors {
-        background-color: rgba(16, 185, 129, 0.1);
+        background-color: rgba(2, 62, 138, 0.08);
         color: var(--secondary);
     }
 
     .stat-icon.blood {
-        background-color: rgba(229, 9, 20, 0.1);
+        background-color: rgba(214, 40, 40, 0.08);
         color: var(--primary);
     }
 
     .stat-icon.organs {
-        background-color: rgba(245, 158, 11, 0.1);
-        color: var(--warning);
+        background-color: rgba(253, 126, 20, 0.08);
+        color: #fd7e14;
     }
 
     .stat-num {
-        font-size: 1.8rem;
-        font-weight: 800;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-heading);
+        line-height: 1.2;
     }
 
     .stat-desc {
         font-size: 0.85rem;
-        color: var(--text-secondary);
-        font-weight: 500;
+        color: var(--text-body);
+        font-weight: 600;
+        margin-top: 0.2rem;
     }
 
-    /* Sections Divider */
+    /* Layout Components */
     .dashboard-layout {
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 2.5rem;
     }
 
     /* Double Requests Grid */
     .requests-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
 
-    /* Tables */
+    /* Tables & Card Headers */
     .section-title {
         font-size: 1.3rem;
         font-weight: 700;
-        margin-bottom: 1.2rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border-color);
+        color: var(--secondary);
+        margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.6rem;
+        border-bottom: 1.5px solid var(--border-subtle);
+        padding-bottom: 0.8rem;
     }
 
     .section-title i {
-        color: var(--primary);
+        font-size: 1.4rem;
     }
 
     .table-holder {
         overflow-x: auto;
         border-radius: 12px;
-        border: 1px solid var(--border-color);
-        background: rgba(22, 28, 45, 0.4);
+        border: 1px solid var(--border-subtle);
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
         text-align: left;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 
     th {
-        background-color: rgba(11, 15, 25, 0.6);
-        color: var(--text-secondary);
-        font-weight: 600;
-        padding: 1rem 1.2rem;
+        background-color: var(--bg-section);
+        color: var(--secondary);
+        font-weight: 700;
+        padding: 1.2rem 1.5rem;
         text-transform: uppercase;
         font-size: 0.75rem;
-        letter-spacing: 0.5px;
-        border-bottom: 1px solid var(--border-color);
+        letter-spacing: 0.8px;
+        border-bottom: 1.5px solid var(--border-subtle);
+        font-family: var(--font-headings);
     }
 
     td {
-        padding: 1rem 1.2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--text-body);
+        vertical-align: middle;
     }
 
     tr:last-child td {
@@ -136,63 +173,136 @@
     }
 
     tr:hover td {
-        background-color: rgba(255, 255, 255, 0.02);
+        background-color: rgba(2, 62, 138, 0.01);
     }
 
     /* Badges */
     .badge {
         display: inline-flex;
         align-items: center;
-        padding: 0.25rem 0.6rem;
-        border-radius: 9999px;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 700;
         gap: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .badge-blood {
-        background-color: rgba(229, 9, 20, 0.12);
-        color: #f87171;
-        border: 1px solid rgba(229, 9, 20, 0.25);
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 40, 40, 0.15);
     }
 
     .badge-status {
-        background-color: rgba(16, 185, 129, 0.12);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.25);
+        background-color: var(--success-green-bg);
+        color: var(--success-green);
+        border: 1px solid rgba(45, 106, 79, 0.15);
     }
 
     .badge-urgency-critical {
-        background-color: rgba(239, 68, 68, 0.15);
-        color: #f87171;
-        border: 1px solid rgba(239, 68, 68, 0.25);
+        background-color: rgba(214, 40, 40, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 40, 40, 0.15);
     }
 
     .badge-urgency-urgent {
-        background-color: rgba(245, 158, 11, 0.15);
-        color: #fbbf24;
-        border: 1px solid rgba(245, 158, 11, 0.25);
+        background-color: rgba(253, 126, 20, 0.08);
+        color: #fd7e14;
+        border: 1px solid rgba(253, 126, 20, 0.15);
     }
 
     .badge-urgency-normal {
-        background-color: rgba(59, 130, 246, 0.15);
-        color: #60a5fa;
-        border: 1px solid rgba(59, 130, 246, 0.25);
+        background-color: rgba(2, 62, 138, 0.08);
+        color: var(--secondary);
+        border: 1px solid rgba(2, 62, 138, 0.15);
     }
 
     .organ-badge {
         display: inline-block;
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-secondary);
-        padding: 0.15rem 0.4rem;
+        background-color: var(--bg-section);
+        color: var(--secondary);
+        padding: 0.2rem 0.5rem;
         border-radius: 4px;
         font-size: 0.75rem;
-        margin-right: 0.2rem;
+        margin-right: 0.3rem;
+        margin-bottom: 0.3rem;
+        border: 1px solid var(--border-subtle);
+        font-weight: 600;
+    }
+
+    /* Find Match Pill Button */
+    .btn-match {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background-color: var(--secondary);
+        color: white !important;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.45rem 1rem;
+        border-radius: 50px; /* rounded-pill style */
+        transition: var(--transition);
+        box-shadow: 0 2px 6px rgba(2, 62, 138, 0.15);
+    }
+
+    .btn-match:hover {
+        background-color: var(--secondary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(2, 62, 138, 0.25);
+    }
+
+    .badge-matched {
+        background-color: rgba(96, 165, 250, 0.12);
+        color: #0284c7;
+        border: 1px solid rgba(96, 165, 250, 0.2);
+    }
+
+    /* Table contact details styling */
+    .table-contact {
+        font-size: 0.85rem;
+        color: var(--text-body);
+    }
+
+    .table-contact div {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
         margin-bottom: 0.2rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-contact div:last-child {
+        margin-bottom: 0;
+    }
+
+    .table-contact i {
+        color: var(--secondary);
+        font-size: 0.8rem;
+    }
+
+    .empty-queue {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-body);
+    }
+
+    .empty-queue i {
+        font-size: 2.5rem;
+        color: var(--border-subtle);
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+
+    .empty-queue p {
+        font-size: 0.95rem;
     }
 
     @media (max-width: 992px) {
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
         .requests-grid {
             grid-template-columns: 1fr;
         }
@@ -201,141 +311,94 @@
 {% endblock %}
 
 {% block content %}
-<div class="dash-header">
-    <h1><i class="fa-solid fa-gauge-high"></i> Administrative Dashboard</h1>
-    <p style="color: var(--text-secondary); margin-top: 0.3rem;">Real-time ecosystem monitor pulling live statistics, donor registries, and emergency request queues.</p>
-</div>
-
-<!-- Stats Summary Boxes -->
-<div class="stats-container">
-    <div class="card stat-box">
-        <div class="stat-icon donors">
-            <i class="fa-solid fa-users"></i>
-        </div>
-        <div>
-            <div class="stat-num">{{ stats.available_donors }}</div>
-            <div class="stat-desc">Available Donors (SQL View)</div>
-        </div>
-    </div>
-    
-    <div class="card stat-box">
-        <div class="stat-icon blood">
-            <i class="fa-solid fa-droplet"></i>
-        </div>
-        <div>
-            <div class="stat-num">{{ stats.pending_blood }}</div>
-            <div class="stat-desc">Pending Blood Requests</div>
-        </div>
+<div class="dashboard-wrapper">
+    <div class="dash-header">
+        <h1><i class="fa-solid fa-gauge-high"></i> Administrative Dashboard</h1>
+        <p>Ecosystem supervisor monitoring live database analytics, active donor view registries, and matching request queues.</p>
     </div>
 
-    <div class="card stat-box">
-        <div class="stat-icon organs">
-            <i class="fa-solid fa-lungs"></i>
-        </div>
-        <div>
-            <div class="stat-num">{{ stats.pending_organ }}</div>
-            <div class="stat-desc">Pending Organ Requests</div>
-        </div>
-    </div>
-</div>
-
-<div class="dashboard-layout">
-    <!-- Section: Active Donors Table (Served from VIEW) -->
-    <div class="card">
-        <h2 class="section-title"><i class="fa-solid fa-users-viewfinder" style="color: var(--secondary);"></i> Available Donor Registry (View-Driven)</h2>
-        {% if donors %}
-            <div class="table-holder">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Blood Type</th>
-                            <th>Organs Willing to Donate</th>
-                            <th>Location</th>
-                            <th>Contact</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for donor in donors %}
-                            <tr>
-                                <td><strong>#{{ donor.donor_id }}</strong></td>
-                                <td style="font-weight: 600;">{{ donor.donor_name }}</td>
-                                <td>
-                                    <span class="badge badge-blood">
-                                        <i class="fa-solid fa-droplet"></i> {{ donor.blood_type }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {% if donor.organs_willing_to_donate %}
-                                        {% for organ in donor.organs_willing_to_donate.split(',') %}
-                                            <span class="organ-badge">{{ organ }}</span>
-                                        {% endfor %}
-                                    {% else %}
-                                        <span style="color: var(--text-secondary); font-style: italic; font-size: 0.8rem;">Blood Profile</span>
-                                    {% endif %}
-                                </td>
-                                <td><i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.3rem;"></i>{{ donor.city }}</td>
-                                <td style="font-size: 0.8rem; color: var(--text-secondary);">
-                                    <div><i class="fa-solid fa-phone" style="width: 14px;"></i> {{ donor.donor_phone }}</div>
-                                    <div><i class="fa-solid fa-envelope" style="width: 14px;"></i> {{ donor.donor_email }}</div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <!-- Stats Summary Cards -->
+    <div class="stats-container">
+        <!-- Available Donors -->
+        <div class="stat-card">
+            <div class="stat-icon donors">
+                <i class="fa-solid fa-users"></i>
             </div>
-        {% else %}
-            <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                <i class="fa-solid fa-users-slash" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.2;"></i>
-                <p>No active donors are currently listed in the available_donors view.</p>
+            <div>
+                <div class="stat-num">{{ stats.available_donors }}</div>
+                <div class="stat-desc">Available Donors (SQL View)</div>
             </div>
-        {% endif %}
+        </div>
+        
+        <!-- Pending Blood -->
+        <div class="stat-card">
+            <div class="stat-icon blood">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <div>
+                <div class="stat-num">{{ stats.pending_blood }}</div>
+                <div class="stat-desc">Pending Blood Requests</div>
+            </div>
+        </div>
+
+        <!-- Pending Organ -->
+        <div class="stat-card">
+            <div class="stat-icon organs">
+                <i class="fa-solid fa-lungs"></i>
+            </div>
+            <div>
+                <div class="stat-num">{{ stats.pending_organ }}</div>
+                <div class="stat-desc">Pending Organ Requests</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Section: Emergency Requests Queues -->
-    <div class="requests-grid">
-        <!-- Blood Requests Table -->
-        <div class="card">
-            <h2 class="section-title"><i class="fa-solid fa-droplet"></i> Recent Blood Requests Queue</h2>
-            {% if blood_requests %}
+    <!-- Main Dashboard Section Grid -->
+    <div class="dashboard-layout">
+        <!-- Section: Active Donors Table (Served from VIEW) -->
+        <div class="card" style="padding: 2.2rem; border-radius: 16px;">
+            <h2 class="section-title"><i class="fa-solid fa-users-viewfinder" style="color: var(--secondary);"></i> Available Donor Registry (SQL View-Driven)</h2>
+            {% if donors %}
                 <div class="table-holder">
                     <table>
                         <thead>
                             <tr>
-                                <th>Recipient</th>
-                                <th>Blood</th>
-                                <th>Quantity</th>
-                                <th>Hospital / City</th>
-                                <th>Urgency</th>
-                                <th>Actions</th>
+                                <th>ID</th>
+                                <th>Donor Name</th>
+                                <th>Blood Type</th>
+                                <th>Organs Willing to Donate</th>
+                                <th>City</th>
+                                <th>Contact Information</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for req in blood_requests %}
+                            {% for donor in donors %}
                                 <tr>
-                                    <td style="font-weight: 600;">{{ req.recipient_name }}</td>
-                                    <td><span class="badge badge-blood">{{ req.blood_type }}</span></td>
-                                    <td>{{ req.quantity_ml }} ml</td>
-                                    <td style="font-size: 0.8rem;">
-                                        <div style="font-weight: 500;">{{ req.hospital_name }}</div>
-                                        <div style="color: var(--text-secondary);"><i class="fa-solid fa-location-dot" style="font-size: 0.75rem;"></i> {{ req.city }}</div>
-                                    </td>
+                                    <td><strong>#{{ donor.donor_id }}</strong></td>
+                                    <td style="font-weight: 700; color: var(--secondary);">{{ donor.donor_name }}</td>
                                     <td>
-                                        <span class="badge badge-urgency-{{ req.urgency_level|lower }}">
-                                            {{ req.urgency_level }}
+                                        <span class="badge badge-blood">
+                                            <i class="fa-solid fa-droplet"></i> {{ donor.blood_type }}
                                         </span>
                                     </td>
                                     <td>
-                                        {% if req.status == 'Pending' %}
-                                            <a href="{{ url_for('match_request', req_type='Blood', req_id=req.request_id) }}" class="badge badge-status" style="background-color: rgba(16, 185, 129, 0.1); color: var(--secondary); border: 1px solid rgba(16, 185, 129, 0.25); text-decoration: none;">
-                                                <i class="fa-solid fa-bezier-curve"></i> Find Match
-                                            </a>
+                                        {% if donor.organs_willing_to_donate %}
+                                            {% for organ in donor.organs_willing_to_donate.split(',') %}
+                                                <span class="organ-badge">{{ organ.strip() }}</span>
+                                            {% endfor %}
                                         {% else %}
-                                            <span class="badge badge-status" style="background-color: rgba(96, 165, 250, 0.1); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.25);">
-                                                Matched
-                                            </span>
+                                            <span style="color: var(--text-body); font-style: italic; font-size: 0.8rem;">Blood Profile Only</span>
                                         {% endif %}
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.3rem;"></i>
+                                        <strong>{{ donor.city }}</strong>
+                                    </td>
+                                    <td>
+                                        <div class="table-contact">
+                                            <div><i class="fa-solid fa-phone"></i> <span>{{ donor.donor_phone }}</span></div>
+                                            <div><i class="fa-solid fa-envelope"></i> <span>{{ donor.donor_email }}</span></div>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -343,64 +406,126 @@
                     </table>
                 </div>
             {% else %}
-                <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                    <i class="fa-solid fa-heart-pulse" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.2;"></i>
-                    <p>No active blood requests in the queue.</p>
+                <div class="empty-queue">
+                    <i class="fa-solid fa-users-slash" style="opacity: 0.15; color: var(--text-body);"></i>
+                    <p>No active donors are currently listed in the <code>available_donors</code> view.</p>
                 </div>
             {% endif %}
         </div>
 
-        <!-- Organ Requests Table -->
-        <div class="card">
-            <h2 class="section-title"><i class="fa-solid fa-lungs" style="color: var(--warning);"></i> Recent Organ Requests Queue</h2>
-            {% if organ_requests %}
-                <div class="table-holder">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Recipient</th>
-                                <th>Organ Required</th>
-                                <th>Hospital / City</th>
-                                <th>Urgency</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for req in organ_requests %}
+        <!-- Section: Emergency Requests Queues -->
+        <div class="requests-grid">
+            <!-- Blood Requests Table -->
+            <div class="card" style="padding: 2.2rem; border-radius: 16px;">
+                <h2 class="section-title"><i class="fa-solid fa-droplet"></i> Recent Blood Requests</h2>
+                {% if blood_requests %}
+                    <div class="table-holder">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td style="font-weight: 600;">{{ req.recipient_name }}</td>
-                                    <td><span class="organ-badge" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.2);">{{ req.organ_type }}</span></td>
-                                    <td style="font-size: 0.8rem;">
-                                        <div style="font-weight: 500;">{{ req.hospital_name }}</div>
-                                        <div style="color: var(--text-secondary);"><i class="fa-solid fa-location-dot" style="font-size: 0.75rem;"></i> {{ req.city }}</div>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-urgency-{{ req.urgency_level|lower }}">
-                                            {{ req.urgency_level }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {% if req.status == 'Pending' %}
-                                            <a href="{{ url_for('match_request', req_type='Organ', req_id=req.request_id) }}" class="badge badge-status" style="background-color: rgba(16, 185, 129, 0.1); color: var(--secondary); border: 1px solid rgba(16, 185, 129, 0.25); text-decoration: none;">
-                                                <i class="fa-solid fa-bezier-curve"></i> Find Match
-                                            </a>
-                                        {% else %}
-                                            <span class="badge badge-status" style="background-color: rgba(96, 165, 250, 0.1); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.25);">
-                                                Matched
-                                            </span>
-                                        {% endif %}
-                                    </td>
+                                    <th>Recipient</th>
+                                    <th>Blood</th>
+                                    <th>Quantity</th>
+                                    <th>Hospital / City</th>
+                                    <th>Urgency</th>
+                                    <th>Actions</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                    <i class="fa-solid fa-lungs" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.2;"></i>
-                    <p>No active organ transplant requests in the queue.</p>
-                </div>
-            {% endif %}
+                            </thead>
+                            <tbody>
+                                {% for req in blood_requests %}
+                                    <tr>
+                                        <td style="font-weight: 700; color: var(--secondary);">{{ req.recipient_name }}</td>
+                                        <td><span class="badge badge-blood">{{ req.blood_type }}</span></td>
+                                        <td><strong>{{ req.quantity_ml }} ml</strong></td>
+                                        <td style="font-size: 0.85rem;">
+                                            <div style="font-weight: 600; color: var(--text-heading);">{{ req.hospital_name }}</div>
+                                            <div style="color: var(--text-body);"><i class="fa-solid fa-location-dot" style="font-size: 0.75rem; color: var(--primary);"></i> {{ req.city }}</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-urgency-{{ req.urgency_level|lower }}">
+                                                {{ req.urgency_level }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if req.status == 'Pending' %}
+                                                <a href="{{ url_for('match_request', req_type='Blood', req_id=req.request_id) }}" class="btn-match">
+                                                    <i class="fa-solid fa-bezier-curve"></i> Match
+                                                </a>
+                                            {% else %}
+                                                <span class="badge badge-matched">
+                                                    <i class="fa-solid fa-circle-check"></i> Matched
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-queue">
+                        <i class="fa-solid fa-heart-pulse" style="opacity: 0.15; color: var(--text-body);"></i>
+                        <p>No active blood requests in the emergency queue.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Organ Requests Table -->
+            <div class="card" style="padding: 2.2rem; border-radius: 16px;">
+                <h2 class="section-title"><i class="fa-solid fa-lungs" style="color: #fd7e14;"></i> Recent Organ Requests</h2>
+                {% if organ_requests %}
+                    <div class="table-holder">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Recipient</th>
+                                    <th>Organ Required</th>
+                                    <th>Hospital / City</th>
+                                    <th>Urgency</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in organ_requests %}
+                                    <tr>
+                                        <td style="font-weight: 700; color: var(--secondary);">{{ req.recipient_name }}</td>
+                                        <td>
+                                            <span class="organ-badge" style="background-color: rgba(253, 126, 20, 0.08); color: #fd7e14; border-color: rgba(253, 126, 20, 0.15); margin: 0; font-weight: 700;">
+                                                {{ req.organ_type }}
+                                            </span>
+                                        </td>
+                                        <td style="font-size: 0.85rem;">
+                                            <div style="font-weight: 600; color: var(--text-heading);">{{ req.hospital_name }}</div>
+                                            <div style="color: var(--text-body);"><i class="fa-solid fa-location-dot" style="font-size: 0.75rem; color: var(--primary);"></i> {{ req.city }}</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-urgency-{{ req.urgency_level|lower }}">
+                                                {{ req.urgency_level }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if req.status == 'Pending' %}
+                                                <a href="{{ url_for('match_request', req_type='Organ', req_id=req.request_id) }}" class="btn-match">
+                                                    <i class="fa-solid fa-bezier-curve"></i> Match
+                                                </a>
+                                            {% else %}
+                                                <span class="badge badge-matched">
+                                                    <i class="fa-solid fa-circle-check"></i> Matched
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-queue">
+                        <i class="fa-solid fa-lungs" style="opacity: 0.15; color: var(--text-body);"></i>
+                        <p>No active organ transplant requests in the emergency queue.</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

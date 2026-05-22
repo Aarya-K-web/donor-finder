@@ -4,12 +4,14 @@
 
 {% block extra_css %}
 <style>
+    /* Hero Layout */
     .hero-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 3rem;
-        padding: 3rem 0;
+        gap: 4rem;
+        padding: 5rem 0;
+        background-color: var(--bg-light);
     }
 
     .hero-text {
@@ -17,62 +19,69 @@
     }
 
     .hero-text h1 {
-        font-size: 3.5rem;
+        font-size: 3.5rem; /* 56px */
         font-weight: 800;
-        line-height: 1.15;
-        letter-spacing: -1.5px;
+        line-height: 1.2;
+        letter-spacing: -1px;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #ffffff 0%, #e50914 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: var(--secondary); /* Deep blue */
+    }
+
+    .hero-text h1 span {
+        color: var(--primary); /* Deep red highlighting "Save a Life." */
     }
 
     .hero-text p {
-        font-size: 1.25rem;
-        color: var(--text-secondary);
+        font-size: 1.25rem; /* 20px subheadline */
+        color: var(--text-body);
         line-height: 1.6;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        max-width: 500px;
     }
 
     .cta-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 1.2rem;
         flex-wrap: wrap;
     }
 
     .btn {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.6rem;
         text-decoration: none;
-        padding: 0.8rem 1.6rem;
-        border-radius: 12px;
+        padding: 0.9rem 2.2rem;
+        border-radius: 50px; /* rounded-pill */
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 1.05rem;
         transition: var(--transition);
         cursor: pointer;
+        font-family: var(--font-headings);
     }
 
     .btn-primary {
         background-color: var(--primary);
         color: white;
-        box-shadow: 0 4px 15px var(--primary-glow);
+        border: 2px solid var(--primary);
+        box-shadow: 0 4px 15px rgba(214, 40, 40, 0.2);
     }
 
     .btn-primary:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
-        background-color: #ff1c27;
+        box-shadow: 0 6px 20px rgba(214, 40, 40, 0.35);
     }
 
-    .btn-secondary {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-primary);
-        border: 1px solid var(--border-color);
+    .btn-secondary-outline {
+        background-color: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
     }
 
-    .btn-secondary:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+    .btn-secondary-outline:hover {
+        background-color: rgba(214, 40, 40, 0.05);
         transform: translateY(-2px);
     }
 
@@ -83,117 +92,358 @@
         align-items: center;
     }
 
-    .heart-container {
-        width: 250px;
-        height: 250px;
-        background: radial-gradient(circle, rgba(229, 9, 20, 0.15) 0%, transparent 70%);
+    /* Heart & Pulse Graphic */
+    .heart-svg-wrapper {
+        width: 320px;
+        height: 320px;
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        position: relative;
     }
 
-    .heart-icon {
-        font-size: 6rem;
-        color: var(--primary);
-        filter: drop-shadow(0 0 15px var(--primary));
-        animation: heartbeat 1.5s ease-in-out infinite;
+    .heart-pulse-svg {
+        width: 100%;
+        height: 100%;
     }
 
-    @keyframes heartbeat {
-        0%, 100% { transform: scale(1); }
-        25% { transform: scale(1.15); }
-        40% { transform: scale(1.05); }
-        60% { transform: scale(1.15); }
+    .svg-heart {
+        fill: var(--primary);
+        transform-origin: center;
+        animation: svg-heartbeat 1.6s infinite ease-in-out;
     }
 
-    .grid-features {
+    .svg-pulse-path {
+        stroke: var(--secondary);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-pulse 3s infinite linear;
+    }
+
+    @keyframes svg-heartbeat {
+        0%, 100% { transform: scale(1) translate(0, 0); }
+        20% { transform: scale(1.1) translate(0, -3px); }
+        40% { transform: scale(1.02) translate(0, 0); }
+        60% { transform: scale(1.08) translate(0, -2px); }
+    }
+
+    @keyframes draw-pulse {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* Stats Bar Section */
+    .stats-bar {
+        background-color: var(--bg-section); /* Light gray band #F8F9FA */
+        border-top: 1px solid var(--border-subtle);
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 2rem 1.5rem;
+        margin: 2rem 0 4rem 0;
+        border-radius: 16px;
+    }
+
+    .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-top: 4rem;
-    }
-
-    .feature-card {
-        padding: 2.5rem 2rem;
+        grid-template-columns: repeat(4, 1fr);
         text-align: center;
+        align-items: center;
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
-    .feature-card i {
-        font-size: 2.5rem;
+    .stat-item {
+        border-right: 1px solid var(--border-subtle);
+        padding: 0.5rem 1rem;
+    }
+
+    .stat-item:last-child {
+        border-right: none;
+    }
+
+    .stat-number {
+        font-family: var(--font-headings);
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--primary); /* Red numbers */
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--text-heading);
+        font-weight: 600;
+    }
+
+    /* How It Works Section */
+    .how-it-works-section {
+        background-color: var(--bg-section); /* Light gray #F8F9FA */
+        padding: 5rem 2rem;
+        margin: 0 -10vw;
+        padding-left: 10vw;
+        padding-right: 10vw;
+        border-top: 1px solid var(--border-subtle);
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.25rem;
+        color: var(--secondary); /* Deep blue */
+        margin-bottom: 1rem;
+    }
+
+    .section-header p {
+        font-size: 1.1rem;
+        color: var(--text-body);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .works-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .work-card {
+        background-color: white;
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-subtle);
+        transition: var(--transition);
+        border: 1px solid var(--border-subtle);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .work-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .work-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: var(--primary);
+        opacity: 0;
+        transition: var(--transition);
+    }
+
+    .work-card:hover::before {
+        opacity: 1;
+    }
+
+    .work-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(214, 40, 40, 0.08);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 2rem auto;
         color: var(--primary);
-        margin-bottom: 1.5rem;
-        filter: drop-shadow(0 0 5px var(--primary-glow));
+        font-size: 1.8rem;
     }
 
-    .feature-card h2 {
-        font-size: 1.4rem;
-        margin-bottom: 0.8rem;
+    .work-card h3 {
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+        color: var(--text-heading);
     }
 
-    .feature-card p {
-        color: var(--text-secondary);
+    .work-card p {
+        color: var(--text-body);
         font-size: 0.95rem;
         line-height: 1.6;
     }
 
-    @media (max-width: 768px) {
+    /* DBMS project showcase band */
+    .dbms-showcase {
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .dbms-card {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 3rem;
+    }
+
+    .dbms-card h2 {
+        color: var(--secondary);
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+    }
+
+    .dbms-card p {
+        color: var(--text-body);
+        margin-bottom: 2rem;
+    }
+
+    /* Scroll Animation Utility */
+    .fade-in-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealSection 0.6s forwards ease-out;
+    }
+
+    @keyframes revealSection {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 992px) {
         .hero-container {
             flex-direction: column;
             text-align: center;
-            padding: 1.5rem 0;
+            padding: 3rem 0;
+            gap: 2.5rem;
+        }
+        .hero-text p {
+            margin-left: auto;
+            margin-right: auto;
         }
         .cta-buttons {
             justify-content: center;
         }
-        .hero-text h1 {
-            font-size: 2.5rem;
+        .works-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .stat-item {
+            border-right: none;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="hero-container">
+<div class="hero-container fade-in-on-scroll">
     <div class="hero-text">
-        <h1>Saving Lives, <br>One Match at a Time</h1>
-        <p>Welcome to LifeLine Link, a cutting-edge college DBMS project showing robust relational database designs linked with a Flask application. Easily register as a donor, post a critical request, and query our dynamic blood compatibility logic instantly.</p>
+        <h1>Find a Donor.<br><span>Save a Life.</span> Right Now.</h1>
+        <p>Saving Lives by connecting patients in critical emergencies with local blood and organ donors instantly using structured compatibility medical routing.</p>
         <div class="cta-buttons">
-            <a href="{{ url_for('register') }}" class="btn btn-primary">
-                <i class="fa-solid fa-user-plus"></i> Join as Donor
+            <a href="{{ url_for('search_donors') }}" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i> Find a Donor
             </a>
-            <a href="{{ url_for('make_request') }}" class="btn btn-secondary">
-                <i class="fa-solid fa-circle-plus"></i> File Emergency Request
-            </a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
-                <i class="fa-solid fa-chart-line"></i> View Admin Panel
-            </a>
+            {% if session.user_id %}
+                <a href="{{ url_for('register_donor') }}" class="btn btn-secondary-outline">
+                    <i class="fa-solid fa-heart-circle-plus"></i> Register as Donor
+                </a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-secondary-outline">
+                    <i class="fa-solid fa-user-plus"></i> Register as Donor
+                </a>
+            {% endif %}
         </div>
     </div>
     <div class="hero-visual">
-        <div class="heart-container">
-            <i class="fa-solid fa-heartbeat heart-icon"></i>
+        <div class="heart-svg-wrapper">
+            <svg class="heart-pulse-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer Pulse Ring Background Glow -->
+                <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(214, 40, 40, 0.05)" stroke-width="4"/>
+                
+                <!-- Heart Shape SVG -->
+                <path class="svg-heart" d="M200,280 C200,280 310,210 310,145 C310,95 270,60 225,60 C200,60 188,72 180,82 C172,72 160,60 135,60 C90,60 50,95 50,145 C50,210 160,280 200,280 Z" />
+                
+                <!-- Pulsing ECG Wave Line Overlay -->
+                <path class="svg-pulse-path" d="M70,200 L120,200 L135,170 L150,230 L165,140 L180,250 L195,190 L210,210 L225,200 L330,200" />
+            </svg>
         </div>
     </div>
 </div>
 
-<div class="grid-features">
-    <div class="card feature-card">
-        <i class="fa-solid fa-magnifying-glass-location"></i>
-        <h2>Smart Finder</h2>
-        <p>Uses pre-compiled MySQL stored procedures incorporating standard medical compatibility matrices to match recipients with valid available donors in their city.</p>
+<!-- Stats Bar Section -->
+<div class="stats-bar fade-in-on-scroll">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">10,000+</div>
+            <div class="stat-label">Active Donors</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Lives Saved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">20+</div>
+            <div class="stat-label">Cities Covered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Instant Available</div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div id="how-it-works" class="how-it-works-section fade-in-on-scroll">
+    <div class="section-header">
+        <h2>How LifeLine Link Works</h2>
+        <p>Our intelligent system matches blood types and organs to expedite emergency health support.</p>
     </div>
     
-    <div class="card feature-card">
-        <i class="fa-solid fa-bolt-lightning"></i>
-        <h2>Triggered Audits</h2>
-        <p>Logs all transactions instantly via database-level AFTER INSERT triggers, creating an immutable audit trail for tracing matches safely.</p>
+    <div class="works-grid">
+        <div class="work-card">
+            <div class="work-icon-wrapper">
+                <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <h3>Post a Request</h3>
+            <p>Describe your specific blood type or organ requirement, target hospital, and priority level in our secure emergency queue.</p>
+        </div>
+        
+        <div class="work-card">
+            <div class="work-icon-wrapper">
+                <i class="fa-solid fa-bezier-curve"></i>
+            </div>
+            <h3>We Find Matches</h3>
+            <p>Our database executing stored medical matching procedures finds compatible, active, local donors within seconds.</p>
+        </div>
+        
+        <div class="work-card">
+            <div class="work-icon-wrapper">
+                <i class="fa-solid fa-phone-volume"></i>
+            </div>
+            <h3>Connect & Save</h3>
+            <p>Obtain verified contact details of matching donors immediately and reach out directly to coordinate medical help.</p>
+        </div>
     </div>
+</div>
 
-    <div class="card feature-card">
-        <i class="fa-solid fa-eye"></i>
-        <h2>Dynamic Views</h2>
-        <p>Restricts data access using dedicated SQL views, serving only available donors and keeping user status synced dynamically in real time.</p>
+<!-- DBMS college showcase -->
+<div class="dbms-showcase fade-in-on-scroll">
+    <div class="card dbms-card">
+        <h2>Ecosystem Security & Architecture</h2>
+        <p>Built using robust SQL views, transactional procedures, and AFTER INSERT database triggers, LifeLine Link showcases high-fidelity relational schema integrity engineered for immediate medical matching audits.</p>
+        {% if session.user_id %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="background-color: var(--secondary); border-color: var(--secondary); box-shadow: 0 4px 15px rgba(2, 62, 138, 0.2);">
+                <i class="fa-solid fa-gauge-high"></i> Administrative Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary" style="background-color: var(--secondary); border-color: var(--secondary); box-shadow: 0 4px 15px rgba(2, 62, 138, 0.2);">
+                <i class="fa-solid fa-right-to-bracket"></i> Login Admin Portal
+            </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

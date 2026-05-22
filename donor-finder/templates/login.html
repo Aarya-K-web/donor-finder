@@ -4,35 +4,55 @@
 
 {% block extra_css %}
 <style>
-    .login-container {
-        max-width: 450px;
-        margin: 4rem auto;
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray background #F8F9FA */
+    }
+
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem 0;
+    }
+
+    .login-card {
+        max-width: 480px;
+        width: 100%;
+        padding: 3rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-header i {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
     }
 
     .form-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary); /* Deep Blue */
         margin-bottom: 0.5rem;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-    }
-
-    .form-title i {
-        color: var(--primary);
     }
 
     .form-subtitle {
-        color: var(--text-secondary);
-        text-align: center;
-        margin-bottom: 2.5rem;
+        color: var(--text-body);
         font-size: 0.95rem;
     }
 
     .form-group {
         margin-bottom: 1.5rem;
+        text-align: left;
     }
 
     .form-group label {
@@ -40,25 +60,25 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-primary);
+        color: var(--text-heading);
     }
 
     .form-control {
         width: 100%;
-        background-color: rgba(11, 15, 25, 0.6);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
         padding: 0.8rem 1rem;
-        color: white;
-        font-family: var(--font-main);
+        color: var(--text-heading);
+        font-family: var(--font-body);
         font-size: 1rem;
         transition: var(--transition);
     }
 
     .form-control:focus {
         outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
     }
 
     .btn-submit {
@@ -66,27 +86,28 @@
         color: white;
         border: none;
         width: 100%;
-        padding: 1rem;
-        border-radius: 12px;
+        padding: 0.9rem;
+        border-radius: 50px; /* rounded-pill */
         font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
         margin-top: 1rem;
-        box-shadow: 0 4px 15px var(--primary-glow);
+        box-shadow: 0 4px 12px rgba(214, 40, 40, 0.25);
+        font-family: var(--font-headings);
     }
 
     .btn-submit:hover {
-        background-color: #ff1c27;
+        background-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        box-shadow: 0 6px 15px rgba(214, 40, 40, 0.35);
     }
 
     .register-link {
         text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
+        margin-top: 2rem;
+        font-size: 0.95rem;
+        color: var(--text-body);
     }
 
     .register-link a {
@@ -97,16 +118,20 @@
     }
 
     .register-link a:hover {
-        color: #ff3333;
+        color: var(--primary-hover);
+        text-decoration: underline;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="login-container">
-    <div class="card">
-        <h1 class="form-title"><i class="fa-solid fa-right-to-bracket"></i> Welcome Back</h1>
-        <p class="form-subtitle">Login to manage your profile or submit emergencies.</p>
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="form-header">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h1 class="form-title">Welcome Back</h1>
+            <p class="form-subtitle">Access your LifeLine Link medical finder portal</p>
+        </div>
         
         <form method="POST" action="{{ url_for('login') }}">
             <!-- Email -->
@@ -121,7 +146,7 @@
                 <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
             </div>
 
-            <button type="submit" class="btn-submit">Login Account</button>
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login Account</button>
         </form>
 
         <div class="register-link">

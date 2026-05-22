@@ -4,35 +4,127 @@
 
 {% block extra_css %}
 <style>
-    .register-container {
-        max-width: 600px;
-        margin: 2rem auto;
+    /* Page Background Overrides */
+    body {
+        background-color: var(--bg-section); /* Soft gray #F8F9FA */
     }
 
-    .form-title {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        text-align: center;
+    .register-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .register-card {
+        max-width: 650px;
+        width: 100%;
+        padding: 3rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid var(--border-subtle);
+    }
+
+    /* Progress Steps Tracker */
+    .steps-tracker {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2.5rem;
+        padding: 0 1rem;
+    }
+
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        position: relative;
+    }
+
+    .step-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: #E2E8F0;
+        color: #718096;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.6rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        border: 2px solid transparent;
+        z-index: 2;
     }
 
-    .form-title i {
+    .step.active .step-num {
+        background-color: var(--secondary);
+        color: white;
+    }
+
+    .step.completed .step-num {
+        background-color: var(--success-green);
+        color: white;
+    }
+
+    .step-text {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #718096;
+        transition: var(--transition);
+    }
+
+    .step.active .step-text {
+        color: var(--secondary);
+    }
+
+    .step.completed .step-text {
+        color: var(--success-green);
+    }
+
+    .step-connector {
+        flex: 1;
+        height: 3px;
+        background-color: #E2E8F0;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+        z-index: 1;
+    }
+
+    .step-connector.completed {
+        background-color: var(--success-green);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-header i {
         color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+        display: inline-block;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 0.5rem;
     }
 
     .form-subtitle {
-        color: var(--text-secondary);
-        text-align: center;
-        margin-bottom: 2rem;
+        color: var(--text-body);
         font-size: 0.95rem;
     }
 
     .form-group {
         margin-bottom: 1.5rem;
+        text-align: left;
     }
 
     .form-group label {
@@ -40,69 +132,112 @@
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-primary);
+        color: var(--text-heading);
     }
 
     .form-control {
         width: 100%;
-        background-color: rgba(11, 15, 25, 0.6);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
         padding: 0.8rem 1rem;
-        color: white;
-        font-family: var(--font-main);
+        color: var(--text-heading);
+        font-family: var(--font-body);
         font-size: 1rem;
         transition: var(--transition);
     }
 
     .form-control:focus {
         outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 10px rgba(229, 9, 20, 0.15);
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(2, 62, 138, 0.1);
     }
 
-    select.form-control option {
-        background-color: var(--bg-dark);
-        color: white;
-    }
-
-    /* Donor Profile Special Box */
+    /* Donor Specifications Section */
     .donor-section {
-        background-color: rgba(255, 255, 255, 0.02);
-        border: 1px dashed rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-top: 1.5rem;
+        background-color: var(--bg-section);
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2rem 0;
         display: none; /* Controlled dynamically by JavaScript */
-        animation: fadeIn 0.4s ease;
+        animation: slideDown 0.3s ease-out;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .organ-grid {
+    /* Blood Type Button Grid */
+    .blood-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
         margin-top: 0.5rem;
     }
 
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text-secondary);
-        font-size: 0.9rem;
+    .blood-btn {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: 0.8rem;
+        font-family: var(--font-headings);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-heading);
         cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
     }
 
-    .checkbox-container input {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--primary);
+    .blood-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background-color: rgba(214, 40, 40, 0.02);
+    }
+
+    .blood-btn.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 4px 10px rgba(214, 40, 40, 0.2);
+    }
+
+    /* Organ Chips Selector */
+    .organ-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .chip-label {
+        background-color: white;
+        border: 1.5px solid var(--border-subtle);
+        border-radius: 50px; /* rounded chip style */
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-body);
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        transition: var(--transition);
+        user-select: none;
+    }
+
+    .chip-label input {
+        display: none; /* Hide default checkbox */
+    }
+
+    .chip-label:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    .chip-label.active {
+        background-color: rgba(214, 40, 40, 0.08);
+        border-color: var(--primary);
+        color: var(--primary);
+        font-weight: 600;
     }
 
     .btn-submit {
@@ -111,52 +246,105 @@
         border: none;
         width: 100%;
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: 50px; /* rounded-pill */
         font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
         margin-top: 1.5rem;
-        box-shadow: 0 4px 15px var(--primary-glow);
+        box-shadow: 0 4px 15px rgba(214, 40, 40, 0.25);
+        font-family: var(--font-headings);
     }
 
     .btn-submit:hover {
-        background-color: #ff1c27;
+        background-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        box-shadow: 0 6px 20px rgba(214, 40, 40, 0.35);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.95rem;
+        color: var(--text-body);
+    }
+
+    .login-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .login-link a:hover {
+        color: var(--primary-hover);
+        text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+        .blood-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .organ-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .steps-tracker {
+            display: none;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="register-container">
-    <div class="card">
-        <h1 class="form-title"><i class="fa-solid fa-id-card"></i> Create Account</h1>
-        <p class="form-subtitle">Register to join the donor registry or to request critical transplant items.</p>
+<div class="register-wrapper">
+    <div class="register-card">
+        <!-- Progress Steps -->
+        <div class="steps-tracker">
+            <div class="step active" id="step-1">
+                <span class="step-num">1</span>
+                <span class="step-text">Personal Info</span>
+            </div>
+            <div class="step-connector" id="connector-1"></div>
+            <div class="step" id="step-2">
+                <span class="step-num">2</span>
+                <span class="step-text">Donor Specs</span>
+            </div>
+            <div class="step-connector" id="connector-2"></div>
+            <div class="step" id="step-3">
+                <span class="step-num">3</span>
+                <span class="step-text">Confirm Profile</span>
+            </div>
+        </div>
+
+        <div class="form-header">
+            <i class="fa-solid fa-id-card"></i>
+            <h1 class="form-title">Create Account</h1>
+            <p class="form-subtitle">Register to join the donor registry or file emergency requests</p>
+        </div>
         
         <form method="POST" action="{{ url_for('register') }}">
             <!-- Name -->
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Aarya Patel" required>
+                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Aarya Patel" required oninput="checkPersonalProgress()">
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="e.g. aarya@example.com" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="e.g. aarya@example.com" required oninput="checkPersonalProgress()">
             </div>
 
             <!-- Phone -->
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" name="phone" id="phone" class="form-control" placeholder="e.g. 9876543210" required>
+                <input type="tel" name="phone" id="phone" class="form-control" placeholder="e.g. 9876543210" required oninput="checkPersonalProgress()">
             </div>
 
             <!-- Password -->
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Create secure password" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Create a secure password" required oninput="checkPersonalProgress()">
             </div>
 
             <!-- User Type -->
@@ -171,33 +359,40 @@
 
             <!-- Secondary Donor Info Section (Hidden unless Donor is chosen) -->
             <div id="donorSection" class="donor-section">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem;">
-                    <i class="fa-solid fa-hand-holding-heart" style="color: var(--secondary); margin-right: 0.3rem;"></i> 
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; color: var(--secondary);">
+                    <i class="fa-solid fa-hand-holding-heart" style="color: var(--primary); margin-right: 0.3rem;"></i> 
                     Donor Profile Specifications
                 </h3>
                 
                 <div class="form-group">
-                    <label for="blood_type">Donor Blood Type</label>
-                    <select name="blood_type" id="blood_type" class="form-control">
+                    <label>Donor Blood Type</label>
+                    <!-- Hidden select for Flask compatibility -->
+                    <select name="blood_type" id="blood_type" class="form-control" style="display: none;">
                         <option value="" disabled selected>Select Blood Type</option>
                         {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
                             <option value="{{ type }}">{{ type }}</option>
                         {% endfor %}
                     </select>
+                    <!-- Visual Button Grid -->
+                    <div class="blood-grid">
+                        {% for type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <button type="button" class="blood-btn" data-value="{{ type }}" onclick="selectBloodType(this, '{{ type }}')">{{ type }}</button>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="city">City Location</label>
-                    <input type="text" name="city" id="city" class="form-control" placeholder="e.g. Mumbai">
+                    <input type="text" name="city" id="city" class="form-control" placeholder="e.g. Mumbai" oninput="checkDonorProgress()">
                 </div>
 
                 <div class="form-group">
-                    <label>Organs Willing to Donate (Optional)</label>
+                    <label>Organs Willing to Donate (Select as toggle chips)</label>
                     <div class="organ-grid">
                         {% for organ in ['Kidney', 'Liver', 'Lung', 'Heart', 'Pancreas', 'Cornea'] %}
-                            <label class="checkbox-container">
+                            <label class="chip-label" onclick="toggleOrganChip(this)">
                                 <input type="checkbox" name="organs" value="{{ organ }}">
-                                <span>{{ organ }}</span>
+                                <span><i class="fa-solid fa-plus" style="font-size: 0.75rem; margin-right: 0.2rem;"></i>{{ organ }}</span>
                             </label>
                         {% endfor %}
                     </div>
@@ -206,10 +401,14 @@
 
             <button type="submit" class="btn-submit">Register Account</button>
         </form>
+
+        <div class="login-link">
+            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </div>
     </div>
 </div>
 
-<!-- JavaScript to handle dynamic form fields -->
+<!-- JavaScript to handle dynamic form fields & progress steps -->
 <script>
     function toggleDonorSection() {
         var userTypeSelect = document.getElementById("user_type");
@@ -217,14 +416,98 @@
         var bloodTypeSelect = document.getElementById("blood_type");
         var cityInput = document.getElementById("city");
 
+        var step1 = document.getElementById("step-1");
+        var step2 = document.getElementById("step-2");
+        var step3 = document.getElementById("step-3");
+        var conn1 = document.getElementById("connector-1");
+        var conn2 = document.getElementById("connector-2");
+
         if (userTypeSelect.value === "Donor") {
             donorSection.style.display = "block";
             bloodTypeSelect.setAttribute("required", "required");
             cityInput.setAttribute("required", "required");
+
+            // Step status update
+            step1.className = "step completed";
+            conn1.className = "step-connector completed";
+            step2.className = "step active";
+            checkDonorProgress();
         } else {
             donorSection.style.display = "none";
             bloodTypeSelect.removeAttribute("required");
             cityInput.removeAttribute("required");
+
+            // Skip step 2 for Recipients
+            step1.className = "step completed";
+            conn1.className = "step-connector completed";
+            step2.className = "step completed";
+            conn2.className = "step-connector completed";
+            step3.className = "step active";
+        }
+    }
+
+    // Handles blood type button clicking and syncs with hidden Flask select
+    function selectBloodType(btn, val) {
+        // Deactivate all blood buttons
+        document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('active'));
+        // Activate current button
+        btn.classList.add('active');
+
+        // Set value on select
+        var select = document.getElementById("blood_type");
+        select.value = val;
+
+        checkDonorProgress();
+    }
+
+    // Toggles visual state of organ chip checkboxes
+    function toggleOrganChip(label) {
+        // Simple delay to let checkbox update state
+        setTimeout(function() {
+            var checkbox = label.querySelector('input');
+            var icon = label.querySelector('i');
+            if (checkbox.checked) {
+                label.classList.add('active');
+                if (icon) icon.className = "fa-solid fa-check";
+            } else {
+                label.classList.remove('active');
+                if (icon) icon.className = "fa-solid fa-plus";
+            }
+        }, 30);
+    }
+
+    // Check personal info fields progress
+    function checkPersonalProgress() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+        var pass = document.getElementById("password").value;
+        var role = document.getElementById("user_type").value;
+        var step1 = document.getElementById("step-1");
+
+        if (name && email && phone && pass) {
+            step1.className = "step completed";
+        } else {
+            step1.className = "step active";
+        }
+    }
+
+    // Check donor specifications details progress
+    function checkDonorProgress() {
+        var blood = document.getElementById("blood_type").value;
+        var city = document.getElementById("city").value;
+        var step2 = document.getElementById("step-2");
+        var step3 = document.getElementById("step-3");
+        var conn2 = document.getElementById("connector-2");
+
+        if (blood && city) {
+            step2.className = "step completed";
+            conn2.className = "step-connector completed";
+            step3.className = "step active";
+        } else {
+            step2.className = "step active";
+            conn2.className = "step-connector";
+            step3.className = "step";
         }
     }
 </script>
